@@ -5,6 +5,6 @@ package com.resttest.model;
  */
 public enum Role {
 
-    ROLE_TEACHER, ROLE_ADMIN
+    ROLE_STUDENT, ROLE_ADMIN, ROLE_TEACHER
 
 }

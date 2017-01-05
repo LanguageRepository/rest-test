@@ -4,7 +4,6 @@ import com.resttest.dto.ShortView;
 import com.resttest.dto.UserDto;
 import com.resttest.model.User;
 import com.resttest.repository.DepartmentJpaRepository;
-import com.resttest.repository.RoleJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +16,12 @@ import java.util.List;
 @Component
 public class UserUtils {
 
+    private final DepartmentJpaRepository departmentJpaRepository;
+
     @Autowired
-    private DepartmentJpaRepository departmentJpaRepository;
+    public UserUtils(DepartmentJpaRepository departmentJpaRepository) {
+        this.departmentJpaRepository = departmentJpaRepository;
+    }
 
     public UserDto convertEntityToDto(User user) {
         UserDto dto = new UserDto();
@@ -31,7 +34,7 @@ public class UserUtils {
         dto.setPassword(user.getPassword());
         dto.setUsername(user.getUsername());
         dto.setPhone(user.getPhone());
-        dto.setRoles(user.getRoles());
+        dto.setRole(user.getRole());
         dto.setDepartment(user.getDepartment().getName());
         return dto;
     }
@@ -41,7 +44,7 @@ public class UserUtils {
         entity.setId(dto.getId());
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
-        entity.setRoles(dto.getRoles());
+        entity.setRole(dto.getRole());
         entity.setDepartment(departmentJpaRepository.getDepartmentByName(dto.getDepartment()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
@@ -54,19 +57,19 @@ public class UserUtils {
 
     public List<UserDto> convertEntitiesToDtos(List<User> entities) {
         List<UserDto> dtos = new ArrayList<>();
-        for(int i = 0; i < entities.size(); i++) {
+        for (User entity : entities) {
             UserDto dto = new UserDto();
-            dto.setId(entities.get(i).getId());
-            dto.setDescription(entities.get(i).getDescription());
-            dto.setEmail(entities.get(i).getEmail());
-            dto.setFirstName(entities.get(i).getFirstName());
-            dto.setMiddleName(entities.get(i).getMiddleName());
-            dto.setLastName(entities.get(i).getLastName());
-            dto.setPassword(entities.get(i).getPassword());
-            dto.setUsername(entities.get(i).getUsername());
-            dto.setPhone(entities.get(i).getPhone());
-            dto.setRoles(entities.get(i).getRoles());
-            dto.setDepartment(entities.get(i).getDepartment().getName());
+            dto.setId(entity.getId());
+            dto.setDescription(entity.getDescription());
+            dto.setEmail(entity.getEmail());
+            dto.setFirstName(entity.getFirstName());
+            dto.setMiddleName(entity.getMiddleName());
+            dto.setLastName(entity.getLastName());
+            dto.setPassword(entity.getPassword());
+            dto.setUsername(entity.getUsername());
+            dto.setPhone(entity.getPhone());
+            dto.setRole(entity.getRole());
+            dto.setDepartment(entity.getDepartment().getName());
             dtos.add(dto);
         }
         return dtos;
@@ -81,10 +84,10 @@ public class UserUtils {
 
     public List<ShortView> convertUsersToShortViews(List<User> entities) {
         List<ShortView> shortViews = new ArrayList<>();
-        for(int i = 0; i < entities.size(); i++) {
+        for (User entity : entities) {
             ShortView shortView = new ShortView();
-            shortView.setId(entities.get(i).getId());
-            shortView.setName(entities.get(i).getUsername());
+            shortView.setId(entity.getId());
+            shortView.setName(entity.getUsername());
             shortViews.add(shortView);
         }
         return shortViews;

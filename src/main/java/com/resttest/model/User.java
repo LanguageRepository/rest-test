@@ -1,12 +1,12 @@
 package com.resttest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -16,8 +16,20 @@ public class User implements Serializable{
 	public static final long serialVersionUID = 20160403085809L;
 
 	private Long id;
+
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
+
+	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "enabled", nullable = false)
+	private Boolean enabled;
+
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 	private String lastName;
 	private String firstName;
 	private String middleName;
@@ -26,7 +38,6 @@ public class User implements Serializable{
 	private String phone;
 	private String description;
 	private List<TestResult> testResults;
-	private Set<Role> roles;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,7 +49,14 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	@Column
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -47,7 +65,6 @@ public class User implements Serializable{
 		this.username = username;
 	}
 
-	@Column
 	public String getPassword() {
 		return password;
 	}
@@ -56,17 +73,12 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "user_roles", joinColumns =  {
-			@JoinColumn(name = "user_id", nullable = false, updatable = false)},
-			inverseJoinColumns = { @JoinColumn(name = "role_id",
-						nullable = false, updatable = false)})
-	public Set<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Column

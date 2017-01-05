@@ -1,8 +1,9 @@
 package com.resttest.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.resttest")
+@Import({WebSecurityConfig.class})
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATION = {"classpath:/view", "classpath:/static"};
@@ -26,6 +27,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/tasks").setViewName("tasks");
         registry.addViewController("/cpanel").setViewName("cpanel");
+        registry.addViewController("/sec").setViewName("profile");
     }
 
     @Override
@@ -42,5 +44,6 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(".html");
         return viewResolver;
     }
+
 
 }

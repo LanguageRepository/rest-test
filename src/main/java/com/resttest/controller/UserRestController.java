@@ -21,7 +21,7 @@ public class UserRestController {
     private UserService userService;
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json")
-    public UserDto getUser(@PathVariable("id") Long id) {
+    public User getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
