@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Страница входа</title>
+    <meta charset="UTF-8">
+    <script src="../static/js/login.js"></script>
+    <link rel="stylesheet" href="../static/css/login.css"/>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+
+    <form id="loginForm"  action="/login" method="post"class="form-signin" role="form">
+        <h2 class="form-signin-heading">Вход</h2>
+        <input id="username" name="username" value="" type="text" class="form-control" placeholder="Логин" required autofocus>
+        <input name="password" type="password" value="" class="form-control" placeholder="Пароль" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="checkFormData()">Sign in</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+</div> <!-- /container -->
+</body>
+</html>
