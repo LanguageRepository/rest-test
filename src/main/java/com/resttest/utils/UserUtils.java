@@ -34,7 +34,7 @@ public class UserUtils {
         dto.setPassword(user.getPassword());
         dto.setUsername(user.getUsername());
         dto.setPhone(user.getPhone());
-        dto.setRole(user.getRole());
+        dto.setRoles(user.getUserRole());
         dto.setDepartment(user.getDepartment().getName());
         return dto;
     }
@@ -44,7 +44,7 @@ public class UserUtils {
         entity.setId(dto.getId());
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
+        entity.setUserRole(dto.getRoles());
         entity.setDepartment(departmentJpaRepository.getDepartmentByName(dto.getDepartment()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
@@ -68,7 +68,7 @@ public class UserUtils {
             dto.setPassword(entity.getPassword());
             dto.setUsername(entity.getUsername());
             dto.setPhone(entity.getPhone());
-            dto.setRole(entity.getRole());
+            dto.setRoles(entity.getUserRole());
             dto.setDepartment(entity.getDepartment().getName());
             dtos.add(dto);
         }

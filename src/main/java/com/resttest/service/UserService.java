@@ -72,4 +72,11 @@ public class UserService {
         return userJpaRepository.getUserByUsername(username);
     }
 
+    @Transactional
+    public void changePassword(UserDto dto) {
+        User user = userJpaRepository.getUserByUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
+        userJpaRepository.saveAndFlush(user);
+    }
+
 }

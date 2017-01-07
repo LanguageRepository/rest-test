@@ -1,9 +1,12 @@
 package com.resttest.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -11,11 +14,14 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.util.Properties;
+
 /**
  * Created by kvasa on 01.01.2017.
  */
 @Configuration
 @EnableWebMvc
+@ComponentScan("com.resttest")
 @Import({WebSecurityConfig.class})
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
@@ -27,7 +33,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/tasks").setViewName("tasks");
         registry.addViewController("/cpanel").setViewName("cpanel");
-        registry.addViewController("/sec").setViewName("profile");
+        registry.addViewController("/profile").setViewName("profile");
+        registry.addViewController("/403").setViewName("403");
     }
 
     @Override
@@ -45,5 +52,22 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
+    @Bean
+    public JavaMailSender getMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("kvasar739@gmail.com");
+        mailSender.setPassword("honornew1");
+        mailSender.setDefaultEncoding("UTF-8");
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.auth", "true");
+        javaMailProperties.put("mail.transport.protocol", "smtp");
+        javaMailProperties.put("mail.debug", "true");
+        javaMailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        mailSender.setJavaMailProperties(javaMailProperties);
+        return mailSender;
+    }
 
 }

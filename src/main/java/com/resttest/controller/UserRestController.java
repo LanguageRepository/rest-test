@@ -8,6 +8,7 @@ import com.resttest.utils.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.AddressException;
 import java.util.List;
 
 /**
@@ -53,6 +54,12 @@ public class UserRestController {
     @RequestMapping(value = "/get/short", method = RequestMethod.GET, produces = "application/json")
     public List<ShortView> getShortUsers() {
         return userService.getShortUsers();
+    }
+
+    @RequestMapping(value = "/changepassword", method = RequestMethod.PUT, produces = "application/json")
+    public RestResult changePasswordForUser(@RequestBody UserDto dto) {
+        userService.changePassword(dto);
+        return new RestResult("" + dto.getPassword());
     }
 
 }

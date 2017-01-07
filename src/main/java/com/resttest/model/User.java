@@ -1,10 +1,12 @@
 package com.resttest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,20 +18,10 @@ public class User implements Serializable{
 	public static final long serialVersionUID = 20160403085809L;
 
 	private Long id;
-
-	@Column(name = "username", nullable = false, unique = true)
 	private String username;
-
-	@Column(name = "password", nullable = false)
 	private String password;
-
-	@Column(name = "enabled", nullable = false)
-	private Boolean enabled;
-
-	@Column(name = "role", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Role role;
-
+	private Boolean enabled = true;
+	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 	private String lastName;
 	private String firstName;
 	private String middleName;
@@ -38,6 +30,22 @@ public class User implements Serializable{
 	private String phone;
 	private String description;
 	private List<TestResult> testResults;
+
+	public User() {
+	}
+
+	public User(String username, String password, boolean enabled) {
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
+
+	public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+		this.userRole = userRole;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -49,14 +57,8 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
+	@Column(name = "username", unique = true,
+			nullable = false, length = 45)
 	public String getUsername() {
 		return username;
 	}
@@ -65,6 +67,8 @@ public class User implements Serializable{
 		this.username = username;
 	}
 
+	@Column(name = "password",
+			nullable = false, length = 60)
 	public String getPassword() {
 		return password;
 	}
@@ -73,12 +77,23 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public Role getRole() {
-		return role;
+	@Column(name = "enabled", nullable = false)
+	public Boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@JsonIgnore
+	public Set<UserRole> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(Set<UserRole> userRole) {
+		this.userRole = userRole;
 	}
 
 	@Column

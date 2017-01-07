@@ -1,6 +1,6 @@
 package com.resttest.dto;
 
-import com.resttest.model.Role;
+import com.resttest.model.UserRole;
 
 import java.util.Set;
 
@@ -12,7 +12,7 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
-    private Role role;
+    private Set<UserRole> roles;
     private String lastName;
     private String firstName;
     private String middleName;
@@ -45,12 +45,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<UserRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
     }
 
     public String getDepartment() {
