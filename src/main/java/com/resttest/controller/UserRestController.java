@@ -2,6 +2,7 @@ package com.resttest.controller;
 
 import com.resttest.dto.ShortView;
 import com.resttest.dto.UserDto;
+import com.resttest.dto.UserDtoForTable;
 import com.resttest.model.User;
 import com.resttest.service.UserService;
 import com.resttest.utils.RestResult;
@@ -21,7 +22,7 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public User getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
@@ -36,22 +37,23 @@ public class UserRestController {
         return userService.updateUser(userDto);
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE, produces = "application/json")
     public RestResult deleteUser(@PathVariable("id") Long id) {
         return userService.deleteUser(id);
     }
 
-    @RequestMapping(value = "/get/short/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/short/{id}", method = RequestMethod.GET, produces = "application/json")
     public ShortView getShortUser(@PathVariable("id") Long id) {
         return userService.getShortUser(id);
     }
 
-    @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = "application/json")
-    public List<User> getAllUsers() {
+    /*All users is a dto for table on ap in this controller*/
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/get/short", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/short", method = RequestMethod.GET, produces = "application/json")
     public List<ShortView> getShortUsers() {
         return userService.getShortUsers();
     }
@@ -60,6 +62,11 @@ public class UserRestController {
     public RestResult changePasswordForUser(@RequestBody UserDto dto) {
         userService.changePassword(dto);
         return new RestResult("" + dto.getPassword());
+    }
+
+    @RequestMapping(value = "/fortable", method = RequestMethod.GET, produces = "application/json")
+    public List<UserDtoForTable> getUsersForTable() {
+        return userService.getUsersForTable();
     }
 
 }

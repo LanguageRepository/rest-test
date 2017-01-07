@@ -2,7 +2,9 @@ package com.resttest.utils;
 
 import com.resttest.dto.ShortView;
 import com.resttest.dto.UserDto;
+import com.resttest.dto.UserDtoForTable;
 import com.resttest.model.User;
+import com.resttest.model.UserRole;
 import com.resttest.repository.DepartmentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -91,6 +93,27 @@ public class UserUtils {
             shortViews.add(shortView);
         }
         return shortViews;
+    }
+
+    public List<UserDtoForTable> convertEntitiesToDtoForTable(List<User> entities) {
+        List<UserDtoForTable> dtos = new ArrayList<>();
+        for (User entity : entities) {
+            UserDtoForTable dto = new UserDtoForTable();
+            dto.setId(entity.getId());
+            dto.setRoles(entity.getUserRole());
+            dto.setDepartment(entity.getDepartment().getName());
+            dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    public List<String> getSimpleRoles(List<UserRole> roles) {
+        List<String> rolesString = new ArrayList<>();
+        for(int i = 0; i < roles.size(); i++) {
+            rolesString.add(roles.get(i).getRole());
+        }
+        return rolesString;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.resttest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,7 +18,9 @@ public class Department {
 	private String name;
 	private String description;
 	private Department parent;
+	@JsonIgnore
 	private List<Department> childs;
+	@JsonIgnore
 	private List<User> users;
 	
 	public Department() {

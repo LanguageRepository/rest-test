@@ -2,6 +2,7 @@ package com.resttest.dto;
 
 import com.resttest.model.UserRole;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
-    private Set<UserRole> roles;
+    private List<UserRole> roles;
     private String lastName;
     private String firstName;
     private String middleName;
@@ -45,11 +46,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public Set<UserRole> getRoles() {
+    public List<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRole> roles) {
+    public void setRoles(List<UserRole> roles) {
         this.roles = roles;
     }
 

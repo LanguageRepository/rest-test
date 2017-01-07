@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private Boolean enabled = true;
-	private Set<UserRole> userRole = new HashSet<UserRole>(0);
+	private List<UserRole> userRole = new ArrayList<>(0);
 	private String lastName;
 	private String firstName;
 	private String middleName;
@@ -40,7 +41,7 @@ public class User implements Serializable{
 		this.enabled = enabled;
 	}
 
-	public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
+	public User(String username, String password, boolean enabled, List<UserRole> userRole) {
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
@@ -88,11 +89,11 @@ public class User implements Serializable{
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	@JsonIgnore
-	public Set<UserRole> getUserRole() {
+	public List<UserRole> getUserRole() {
 		return userRole;
 	}
 
-	public void setUserRole(Set<UserRole> userRole) {
+	public void setUserRole(List<UserRole> userRole) {
 		this.userRole = userRole;
 	}
 

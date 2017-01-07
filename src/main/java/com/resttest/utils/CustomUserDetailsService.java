@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
+        List<GrantedAuthority> authorities = buildUserAuthority(new HashSet<>(user.getUserRole()));
         return buildUserForAuthentication(user, authorities);
     }
 

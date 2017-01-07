@@ -2,6 +2,7 @@ package com.resttest.service;
 
 import com.resttest.dto.ShortView;
 import com.resttest.dto.UserDto;
+import com.resttest.dto.UserDtoForTable;
 import com.resttest.model.User;
 import com.resttest.repository.UserJpaRepository;
 import com.resttest.utils.RestResult;
@@ -59,8 +60,8 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> getAllUsers() {
-        return userJpaRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userUtils.convertEntitiesToDtos(userJpaRepository.findAll());
     }
 
     @Transactional
@@ -77,6 +78,11 @@ public class UserService {
         User user = userJpaRepository.getUserByUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
         userJpaRepository.saveAndFlush(user);
+    }
+
+    @Transactional
+    public List<UserDtoForTable> getUsersForTable() {
+        return userUtils.convertEntitiesToDtoForTable(userJpaRepository.findAll());
     }
 
 }
