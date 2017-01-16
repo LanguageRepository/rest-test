@@ -1,7 +1,4 @@
-package com.resttest.dto;
-
-import com.resttest.model.Department;
-import com.resttest.model.User;
+package com.resttest.dto.department;
 
 import java.util.List;
 
@@ -13,7 +10,9 @@ public class DepartmentDto {
     private Long id;
     private String name;
     private String description;
-    private Department parent;
+    private DepartmentDto parent;
+    private List<ShortViewForDepartment> childs;
+    private String type;
 
     public Long getId() {
         return id;
@@ -39,11 +38,27 @@ public class DepartmentDto {
         this.description = description;
     }
 
-    public Department getParent() {
+    public DepartmentDto getParent() {
         return parent;
     }
 
-    public void setParent(Department parent) {
+    public void setParent(DepartmentDto parent) {
         this.parent = parent;
+    }
+
+    public List<ShortViewForDepartment> getChilds() {
+        return childs;
+    }
+
+    public void setChilds(List<ShortViewForDepartment> childs) {
+        this.childs = childs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

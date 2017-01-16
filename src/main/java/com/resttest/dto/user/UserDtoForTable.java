@@ -1,4 +1,4 @@
-package com.resttest.dto;
+package com.resttest.dto.user;
 
 import com.resttest.model.UserRole;
 
@@ -14,6 +14,7 @@ public class UserDtoForTable {
     private String fullName;
     private String department;
     private List<UserRole> roles;
+    private String email;
 
     public Long getId() {
         return id;
@@ -21,6 +22,14 @@ public class UserDtoForTable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFullName() {

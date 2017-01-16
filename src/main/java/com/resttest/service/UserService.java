@@ -1,8 +1,8 @@
 package com.resttest.service;
 
 import com.resttest.dto.ShortView;
-import com.resttest.dto.UserDto;
-import com.resttest.dto.UserDtoForTable;
+import com.resttest.dto.user.UserDto;
+import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.User;
 import com.resttest.repository.UserJpaRepository;
 import com.resttest.utils.RestResult;

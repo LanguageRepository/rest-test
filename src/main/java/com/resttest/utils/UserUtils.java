@@ -1,8 +1,8 @@
 package com.resttest.utils;
 
 import com.resttest.dto.ShortView;
-import com.resttest.dto.UserDto;
-import com.resttest.dto.UserDtoForTable;
+import com.resttest.dto.user.UserDto;
+import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.User;
 import com.resttest.model.UserRole;
 import com.resttest.repository.DepartmentJpaRepository;
@@ -103,6 +103,7 @@ public class UserUtils {
             dto.setRoles(entity.getUserRole());
             dto.setDepartment(entity.getDepartment().getName());
             dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
+            dto.setEmail(entity.getEmail());
             dtos.add(dto);
         }
         return dtos;

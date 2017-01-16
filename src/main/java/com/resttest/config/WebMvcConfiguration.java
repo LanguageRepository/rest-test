@@ -33,6 +33,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/tasks").setViewName("tasks");
         registry.addViewController("/cpanel").setViewName("ap-users");
+        registry.addViewController("/changeuser/**").setViewName("ap-users-upd");
         registry.addViewController("/profile").setViewName("profile");
         registry.addViewController("/403").setViewName("403");
     }

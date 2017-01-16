@@ -1,4 +1,4 @@
-package com.resttest.dto;
+package com.resttest.dto.user;
 
 import com.resttest.model.UserRole;
 

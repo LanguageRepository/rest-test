@@ -18,10 +18,9 @@ public class Department {
 	private String name;
 	private String description;
 	private Department parent;
-	@JsonIgnore
 	private List<Department> childs;
-	@JsonIgnore
 	private List<User> users;
+	private String type;
 	
 	public Department() {
 		
@@ -81,5 +80,13 @@ public class Department {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-	
+
+	@Column
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
