@@ -1,6 +1,5 @@
 package com.resttest.utils;
 
-import com.resttest.dto.ShortView;
 import com.resttest.dto.department.DepartmentDto;
 import com.resttest.dto.department.ShortViewForDepartment;
 import com.resttest.model.Department;
@@ -18,63 +17,48 @@ import java.util.List;
 public class DepartmentUtils {
 
     @Autowired
-    private DepartmentJpaRepository departmentJpaRepository;
+    public DepartmentJpaRepository repository;
 
     @Autowired
-    private DepartmentUtils departmentUtils;
+    public DepartmentUtils utils;
 
-    public DepartmentDto convertEntityToDto(Department department) {
+    public DepartmentDto convertEntityToDto(Department entity) {
         DepartmentDto dto = new DepartmentDto();
-        dto.setId(department.getId());
-        dto.setName(department.getName());
-        dto.setDescription(department.getDescription());
-        dto.setParent(departmentUtils.convertEntityToDto(departmentJpaRepository.getOne(department.getParent().getId())));
-        dto.setChilds(new DepartmentUtils().convertDepartmentToShortViews(department.getChilds()));
-        dto.setType(department.getType());
+        List<DepartmentDto> childs = new ArrayList<>();
+        for (int i = 0; i < entity.getChilds().size(); i++) {
+            childs.add(utils.convertEntityToDto(entity.getChilds().get(i)));
+        }
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
+        dto.setType(entity.getType());
+        dto.setChildren(childs);
         return dto;
     }
 
     public Department convertDtoToEntity(DepartmentDto dto) {
         Department entity = new Department();
-        entity.setName(dto.getName());
+        List<Department> childs = new ArrayList<>();
+        for (int i = 0; i < dto.getChildren().size(); i++) {
+            childs.add(repository.getOne(dto.getChildren().get(i).getId()));
+        }
         entity.setType(dto.getType());
-        entity.setParent(new DepartmentUtils().convertDtoToEntity(dto.getParent()));
+        entity.setId(dto.getId());
         entity.setDescription(dto.getDescription());
+        entity.setParent(repository.getOne(dto.getParent_id()));
+        entity.setChilds(childs);
         return entity;
     }
 
-    public List<ShortViewForDepartment> convertDepartmentToShortViews(List<Department> entities) {
-        List<ShortViewForDepartment> views = new ArrayList<>();
-        for(int i = 0; i < entities.size(); i++) {
-            ShortViewForDepartment shortView = new ShortViewForDepartment();
-            shortView.setId(entities.get(i).getId());
-            shortView.setName(entities.get(i).getName());
-            shortView.setType(entities.get(i).getType());
-            shortView.setChilds(new DepartmentUtils().convertDepartmentToShortViews(entities.get(i).getChilds()));
-            views.add(shortView);
+    public ShortViewForDepartment convertDepartmentToShortView(Department department) {
+        ShortViewForDepartment shortView = new ShortViewForDepartment();
+        List<ShortViewForDepartment> childs = new ArrayList<>();
+        for (int i = 0; i < department.getChilds().size(); i++) {
+            childs.add(utils.convertDepartmentToShortView(department.getChilds().get(i)));
         }
-        return views;
-    }
-
-    public List<DepartmentDto> convertEntitiesToDtos(List<Department> entities) {
-        List<DepartmentDto> dtos = new ArrayList<>();
-        List<DepartmentDto> childs = new ArrayList<>();
-        for(int i = 0; i < entities.size(); i++) {
-            DepartmentDto dto = new DepartmentDto();
-            dto.setId(entities.get(i).getId());
-            dto.setDescription(entities.get(i).getDescription());
-            dto.setType(entities.get(i).getType());
-            for(int j = 0; j < entities.get(i).getChilds().size(); j++) {
-                DepartmentDto child = new DepartmentDto();
-                //TODO
-            }
-        }
-    }
-
-    public ShortView convertDepartmentToShortView(Department department) {
-        ShortView shortView = new ShortView();
         shortView.setId(department.getId());
-        shortView.setName(department.getName());
+        shortView.setChildren(childs);
+        shortView.setText(department.getName());
         return shortView;
     }
 

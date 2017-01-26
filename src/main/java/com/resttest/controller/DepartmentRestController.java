@@ -1,10 +1,8 @@
 package com.resttest.controller;
 
-import com.resttest.dto.ShortView;
 import com.resttest.dto.department.DepartmentDto;
-import com.resttest.model.Department;
+import com.resttest.dto.department.ShortViewForDepartment;
 import com.resttest.service.DepartmentService;
-import com.resttest.utils.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +22,8 @@ public class DepartmentRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ShortView createDepartment(@RequestBody DepartmentDto dto) {
-        return departmentService.createDepartment(dto);
+    public void createDepartment(@RequestBody DepartmentDto dto) {
+        departmentService.createDepartment(dto);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -36,6 +34,11 @@ public class DepartmentRestController {
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
     public void updateDepartment(@RequestBody DepartmentDto dto) {
         departmentService.updateDepartment(dto);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
+    public ShortViewForDepartment getAllDepartment() {
+        return departmentService.getAllDepartment();
     }
 
 }

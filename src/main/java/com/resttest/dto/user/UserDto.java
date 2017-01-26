@@ -3,7 +3,6 @@ package com.resttest.dto.user;
 import com.resttest.model.UserRole;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kvasa on 01.01.2017.
@@ -21,6 +20,7 @@ public class UserDto {
     private String phone;
     private String description;
     private String department;
+    private Long department_id;
 
     public Long getId() {
         return id;
@@ -52,6 +52,14 @@ public class UserDto {
 
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
+    }
+
+    public Long getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(Long department_id) {
+        this.department_id = department_id;
     }
 
     public String getDepartment() {

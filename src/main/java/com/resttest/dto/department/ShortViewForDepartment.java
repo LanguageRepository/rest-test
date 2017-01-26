@@ -8,17 +8,8 @@ import java.util.List;
 public class ShortViewForDepartment {
 
     private Long id;
-    private String name;
-    private String type;
-    private List<ShortViewForDepartment> childs;
-
-    public List<ShortViewForDepartment> getChilds() {
-        return childs;
-    }
-
-    public void setChilds(List<ShortViewForDepartment> childs) {
-        this.childs = childs;
-    }
+    private String text;
+    private List<ShortViewForDepartment> children;
 
     public Long getId() {
         return id;
@@ -28,19 +19,19 @@ public class ShortViewForDepartment {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public List<ShortViewForDepartment> getChildren() {
+        return children;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChildren(List<ShortViewForDepartment> children) {
+        this.children = children;
     }
 
-    public String getType() {
-        return type;
+    public String getText() {
+        return text;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setText(String text) {
+        this.text = text;
     }
 }

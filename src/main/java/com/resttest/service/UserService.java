@@ -27,8 +27,8 @@ public class UserService {
     private UserUtils userUtils;
 
     @Transactional
-    public User getUser(Long id) {
-        return userJpaRepository.getOne(id);
+    public UserDto getUser(Long id) {
+        return userUtils.convertEntityToDto(userJpaRepository.getOne(id));
     }
 
     @Transactional
@@ -69,8 +69,9 @@ public class UserService {
         return userUtils.convertUsersToShortViews(userJpaRepository.findAll());
     }
 
-    public User getUserByUsername(String username) {
-        return userJpaRepository.getUserByUsername(username);
+    @Transactional
+    public UserDto getUserByUsername(String username) {
+        return userUtils.convertEntityToDto(userJpaRepository.getUserByUsername(username));
     }
 
     @Transactional
@@ -83,6 +84,11 @@ public class UserService {
     @Transactional
     public List<UserDtoForTable> getUsersForTable() {
         return userUtils.convertEntitiesToDtoForTable(userJpaRepository.findAll());
+    }
+
+    @Transactional
+    public ShortView getShortUserByUsername(String username) {
+        return userUtils.convertUserToShortView(userJpaRepository.getUserByUsername(username));
     }
 
 }

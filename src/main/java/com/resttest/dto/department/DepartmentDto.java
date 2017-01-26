@@ -10,9 +10,9 @@ public class DepartmentDto {
     private Long id;
     private String name;
     private String description;
-    private DepartmentDto parent;
-    private List<ShortViewForDepartment> childs;
+    private List<DepartmentDto> children;
     private String type;
+    private Long parent_id;
 
     public Long getId() {
         return id;
@@ -38,20 +38,20 @@ public class DepartmentDto {
         this.description = description;
     }
 
-    public DepartmentDto getParent() {
-        return parent;
+    public List<DepartmentDto> getChildren() {
+        return children;
     }
 
-    public void setParent(DepartmentDto parent) {
-        this.parent = parent;
+    public void setChildren(List<DepartmentDto> children) {
+        this.children = children;
     }
 
-    public List<ShortViewForDepartment> getChilds() {
-        return childs;
+    public Long getParent_id() {
+        return parent_id;
     }
 
-    public void setChilds(List<ShortViewForDepartment> childs) {
-        this.childs = childs;
+    public void setParent_id(Long parent_id) {
+        this.parent_id = parent_id;
     }
 
     public String getType() {

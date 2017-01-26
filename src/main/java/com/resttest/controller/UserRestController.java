@@ -3,7 +3,6 @@ package com.resttest.controller;
 import com.resttest.dto.ShortView;
 import com.resttest.dto.user.UserDto;
 import com.resttest.dto.user.UserDtoForTable;
-import com.resttest.model.User;
 import com.resttest.service.UserService;
 import com.resttest.utils.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class UserRestController {
     private UserService userService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public User getUser(@PathVariable("id") Long id) {
+    public UserDto getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
@@ -66,6 +65,16 @@ public class UserRestController {
     @RequestMapping(value = "/fortable", method = RequestMethod.GET, produces = "application/json")
     public List<UserDtoForTable> getUsersForTable() {
         return userService.getUsersForTable();
+    }
+
+    @RequestMapping(value = "/byname/{username}", method = RequestMethod.GET, produces = "application/json")
+    public UserDto getUserByUsername(@PathVariable("username") String username) {
+        return userService.getUserByUsername(username);
+    }
+
+    @RequestMapping(value = "/short/byname/{username}", method = RequestMethod.GET, produces = "application/json")
+    public ShortView getShortUserByUsername(@PathVariable String username) {
+        return userService.getShortUserByUsername(username);
     }
 
 }

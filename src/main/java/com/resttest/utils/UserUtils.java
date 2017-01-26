@@ -38,6 +38,7 @@ public class UserUtils {
         dto.setPhone(user.getPhone());
         dto.setRoles(user.getUserRole());
         dto.setDepartment(user.getDepartment().getName());
+        dto.setDepartment_id(user.getDepartment().getId());
         return dto;
     }
 
@@ -47,7 +48,7 @@ public class UserUtils {
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
         entity.setUserRole(dto.getRoles());
-        entity.setDepartment(departmentJpaRepository.getDepartmentByName(dto.getDepartment()));
+        entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
         entity.setFirstName(dto.getFirstName());
@@ -115,6 +116,10 @@ public class UserUtils {
             rolesString.add(roles.get(i).getRole());
         }
         return rolesString;
+    }
+
+    public ShortView convertUserToExtendedShortView() {
+        return null;
     }
 
 }

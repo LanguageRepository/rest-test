@@ -1,8 +1,7 @@
 package com.resttest.service;
 
-import com.resttest.dto.ShortView;
 import com.resttest.dto.department.DepartmentDto;
-import com.resttest.model.Department;
+import com.resttest.dto.department.ShortViewForDepartment;
 import com.resttest.repository.DepartmentJpaRepository;
 import com.resttest.utils.DepartmentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ public class DepartmentService {
     }
 
     @Transactional
-    public ShortView createDepartment(DepartmentDto dto) {
-        return departmentUtils.convertDepartmentToShortView(departmentJpaRepository.save(departmentUtils.convertDtoToEntity(dto)));
+    public void createDepartment(DepartmentDto dto) {
+        departmentUtils.convertEntityToDto(departmentJpaRepository.save(departmentUtils.convertDtoToEntity(dto)));
     }
 
     @Transactional
@@ -40,6 +39,11 @@ public class DepartmentService {
     @Transactional
     public void updateDepartment(DepartmentDto dto) {
         departmentJpaRepository.saveAndFlush(departmentUtils.convertDtoToEntity(dto));
+    }
+
+    @Transactional
+    public ShortViewForDepartment getAllDepartment() {
+        return departmentUtils.convertDepartmentToShortView(departmentJpaRepository.getOne(1l));
     }
 
 }

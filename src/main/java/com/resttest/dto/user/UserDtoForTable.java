@@ -3,7 +3,6 @@ package com.resttest.dto.user;
 import com.resttest.model.UserRole;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kvasa on 07.01.2017.

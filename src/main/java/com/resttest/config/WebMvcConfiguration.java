@@ -3,8 +3,6 @@ package com.resttest.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.ViewResolver;
@@ -22,20 +20,22 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.resttest")
-@Import({WebSecurityConfig.class})
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATION = {"classpath:/view", "classpath:/static"};
+    private static final String[] CLASSPATH_RESOURCE_LOCATION = {"classpath:/view", "classpath:/static", "classpath:/view/admin-panel"};
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/tasks").setViewName("tasks");
-        registry.addViewController("/cpanel").setViewName("ap-users");
-        registry.addViewController("/changeuser/**").setViewName("ap-users-upd");
+        registry.addViewController("/cpanel/**").setViewName("/admin-panel/user");
+        registry.addViewController("/changeuser/**").setViewName("user");
         registry.addViewController("/profile").setViewName("profile");
         registry.addViewController("/403").setViewName("403");
+        registry.addViewController("/tests/**").setViewName("/admin-panel/tests");
+        registry.addViewController("/table").setViewName("/admin-panel/table");
+        registry.addViewController("/someservice").setViewName("/admin-panel/icons");
     }
 
     @Override
