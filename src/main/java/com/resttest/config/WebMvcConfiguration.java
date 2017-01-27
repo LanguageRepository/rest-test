@@ -22,7 +22,7 @@ import java.util.Properties;
 @ComponentScan("com.resttest")
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATION = {"classpath:/view", "classpath:/static", "classpath:/view/admin-panel"};
+    private static final String[] CLASSPATH_RESOURCE_LOCATION = {"classpath:/view", "classpath:/static", "classpath:/view/admin-pages-panel"};
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -33,9 +33,9 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/changeuser/**").setViewName("user");
         registry.addViewController("/profile").setViewName("profile");
         registry.addViewController("/403").setViewName("403");
-        registry.addViewController("/tests/**").setViewName("/admin-panel/tests");
-        registry.addViewController("/table").setViewName("/admin-panel/table");
-        registry.addViewController("/someservice").setViewName("/admin-panel/icons");
+        registry.addViewController("/tests/**").setViewName("/admin-pages-panel/tests");
+        registry.addViewController("/table").setViewName("/admin-pages-panel/table");
+        registry.addViewController("/someservice").setViewName("/admin-pages-panel/icons");
     }
 
     @Override
