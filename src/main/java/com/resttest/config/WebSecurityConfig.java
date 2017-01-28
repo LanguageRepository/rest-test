@@ -2,20 +2,12 @@ package com.resttest.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.hibernate.criterion.Restrictions.and;
 
 /**
  * Created by kvasa on 01.01.2017.
@@ -39,10 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/tasks/**", "/profile/**").access("hasRole('ROLE_STUDENT') " +
-                                                                                    "or hasRole('ROLE_ADMIN') " +
-                                                                                    "or hasRole('ROLE_TEACHER')")
-                .anyRequest().authenticated();
+                .antMatchers("/tasks/**", "/profile/**").access("hasRole('ROLE_ADMIN')");
         http
                 .formLogin()
                 .loginPage("/login")

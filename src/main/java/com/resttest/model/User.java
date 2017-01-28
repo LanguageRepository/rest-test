@@ -1,15 +1,10 @@
 package com.resttest.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +17,6 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private Boolean enabled = true;
-	private List<UserRole> userRole = new ArrayList<>(0);
 	private String lastName;
 	private String firstName;
 	private String middleName;
@@ -31,21 +25,9 @@ public class User implements Serializable{
 	private String phone;
 	private String description;
 	private List<TestResult> testResults;
+	private RoleEnum role;
 
 	public User() {
-	}
-
-	public User(String username, String password, boolean enabled) {
-		this.username = username;
-		this.password = password;
-		this.enabled = enabled;
-	}
-
-	public User(String username, String password, boolean enabled, List<UserRole> userRole) {
-		this.username = username;
-		this.password = password;
-		this.enabled = enabled;
-		this.userRole = userRole;
 	}
 
 	@Id
@@ -58,8 +40,17 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	@Column(name = "username", unique = true,
-			nullable = false, length = 45)
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	public RoleEnum getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEnum role) {
+		this.role = role;
+	}
+
+	@Column(name = "username")
 	public String getUsername() {
 		return username;
 	}
@@ -85,16 +76,6 @@ public class User implements Serializable{
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	@JsonIgnore
-	public List<UserRole> getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(List<UserRole> userRole) {
-		this.userRole = userRole;
 	}
 
 	@Column

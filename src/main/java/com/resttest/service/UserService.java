@@ -8,6 +8,8 @@ import com.resttest.repository.UserJpaRepository;
 import com.resttest.utils.RestResult;
 import com.resttest.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +40,9 @@ public class UserService {
     }
 
     @Transactional
-    public ShortView updateUser(UserDto dto) {
-        User user = userJpaRepository.saveAndFlush(userUtils.convertDtoToEntity(dto));
-        return userUtils.convertUserToShortView(user);
+    public String updateUser(UserDto dto) {
+        userJpaRepository.save(userUtils.convertDtoToEntity(dto));
+        return "All right";
     }
 
     @Transactional
@@ -89,6 +91,23 @@ public class UserService {
     @Transactional
     public ShortView getShortUserByUsername(String username) {
         return userUtils.convertUserToShortView(userJpaRepository.getUserByUsername(username));
+    }
+
+    @Transactional
+    public User getSecureUserByUsername(String username) {
+        return userJpaRepository.getUserByUsername(username);
+    }
+
+    @Transactional
+    public UserDto getCurrentAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if(principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return userUtils.convertEntityToDto(userJpaRepository.getUserByUsername(username));
     }
 
 }

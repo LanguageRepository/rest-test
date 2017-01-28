@@ -31,7 +31,7 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public ShortView updateUser(@RequestBody UserDto userDto) {
+    public String updateUser(@RequestBody UserDto userDto) {
         return userService.updateUser(userDto);
     }
 
@@ -75,6 +75,11 @@ public class UserRestController {
     @RequestMapping(value = "/short/byname/{username}", method = RequestMethod.GET, produces = "application/json")
     public ShortView getShortUserByUsername(@PathVariable String username) {
         return userService.getShortUserByUsername(username);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    public UserDto getUsernameCurrentUser() {
+        return userService.getCurrentAuthenticatedUser();
     }
 
 }

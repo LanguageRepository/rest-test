@@ -4,7 +4,6 @@ import com.resttest.dto.ShortView;
 import com.resttest.dto.user.UserDto;
 import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.User;
-import com.resttest.model.UserRole;
 import com.resttest.repository.DepartmentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,7 @@ public class UserUtils {
         dto.setPassword(user.getPassword());
         dto.setUsername(user.getUsername());
         dto.setPhone(user.getPhone());
-        dto.setRoles(user.getUserRole());
+        dto.setRole(user.getRole());
         dto.setDepartment(user.getDepartment().getName());
         dto.setDepartment_id(user.getDepartment().getId());
         return dto;
@@ -47,7 +46,7 @@ public class UserUtils {
         entity.setId(dto.getId());
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
-        entity.setUserRole(dto.getRoles());
+        entity.setRole(dto.getRole());
         entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
@@ -71,7 +70,7 @@ public class UserUtils {
             dto.setPassword(entity.getPassword());
             dto.setUsername(entity.getUsername());
             dto.setPhone(entity.getPhone());
-            dto.setRoles(entity.getUserRole());
+            dto.setRole(entity.getRole());
             dto.setDepartment(entity.getDepartment().getName());
             dtos.add(dto);
         }
@@ -101,21 +100,13 @@ public class UserUtils {
         for (User entity : entities) {
             UserDtoForTable dto = new UserDtoForTable();
             dto.setId(entity.getId());
-            dto.setRoles(entity.getUserRole());
+            dto.setRole(entity.getRole());
             dto.setDepartment(entity.getDepartment().getName());
             dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
             dto.setEmail(entity.getEmail());
             dtos.add(dto);
         }
         return dtos;
-    }
-
-    public List<String> getSimpleRoles(List<UserRole> roles) {
-        List<String> rolesString = new ArrayList<>();
-        for(int i = 0; i < roles.size(); i++) {
-            rolesString.add(roles.get(i).getRole());
-        }
-        return rolesString;
     }
 
     public ShortView convertUserToExtendedShortView() {
