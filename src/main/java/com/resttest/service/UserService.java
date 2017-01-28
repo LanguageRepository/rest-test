@@ -34,15 +34,15 @@ public class UserService {
     }
 
     @Transactional
-    public ShortView createUser(UserDto dto) {
-        User user = userJpaRepository.save(userUtils.convertDtoToEntity(dto));
-        return userUtils.convertUserToShortView(user);
+    public UserDto createUser(UserDto dto) {
+        return userUtils.convertEntityToDto(
+                userJpaRepository.save(userUtils.convertDtoToEntityForPost(dto)));
     }
 
     @Transactional
-    public String updateUser(UserDto dto) {
-        userJpaRepository.save(userUtils.convertDtoToEntity(dto));
-        return "All right";
+    public ShortView updateUser(UserDto dto) {
+        return userUtils.convertUserToShortView(
+                userJpaRepository.save(userUtils.convertDtoToEntityForPut(dto)));
     }
 
     @Transactional

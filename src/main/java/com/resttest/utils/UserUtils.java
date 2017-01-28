@@ -5,6 +5,7 @@ import com.resttest.dto.user.UserDto;
 import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.User;
 import com.resttest.repository.DepartmentJpaRepository;
+import com.resttest.repository.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ import java.util.List;
 public class UserUtils {
 
     private final DepartmentJpaRepository departmentJpaRepository;
+
+    @Autowired
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     public UserUtils(DepartmentJpaRepository departmentJpaRepository) {
@@ -41,9 +45,10 @@ public class UserUtils {
         return dto;
     }
 
-    public User convertDtoToEntity(UserDto dto) {
+    public User convertDtoToEntityForPut(UserDto dto) {
         User entity = new User();
-        entity.setId(dto.getId());
+        Long id = userJpaRepository.getUserByUsername(dto.getUsername()).getId();
+        entity.setId(id);
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
@@ -57,22 +62,40 @@ public class UserUtils {
         return entity;
     }
 
+    public User convertDtoToEntityForPost(UserDto dto) {
+        User entity = new User();
+        entity.setUsername(dto.getUsername());
+        entity.setPassword(dto.getPassword());
+        entity.setRole(dto.getRole());
+        entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
+        entity.setPhone(dto.getPhone());
+        entity.setDescription(dto.getDescription());
+        entity.setFirstName(dto.getFirstName());
+        entity.setMiddleName(dto.getMiddleName());
+        entity.setLastName(dto.getLastName());
+        entity.setEmail(dto.getEmail());
+        return entity;
+    }
+
+
     public List<UserDto> convertEntitiesToDtos(List<User> entities) {
         List<UserDto> dtos = new ArrayList<>();
         for (User entity : entities) {
             UserDto dto = new UserDto();
-            dto.setId(entity.getId());
-            dto.setDescription(entity.getDescription());
-            dto.setEmail(entity.getEmail());
-            dto.setFirstName(entity.getFirstName());
-            dto.setMiddleName(entity.getMiddleName());
-            dto.setLastName(entity.getLastName());
-            dto.setPassword(entity.getPassword());
-            dto.setUsername(entity.getUsername());
-            dto.setPhone(entity.getPhone());
-            dto.setRole(entity.getRole());
-            dto.setDepartment(entity.getDepartment().getName());
-            dtos.add(dto);
+            if(entity.getDeleted() == false) {
+                dto.setId(entity.getId());
+                dto.setDescription(entity.getDescription());
+                dto.setEmail(entity.getEmail());
+                dto.setFirstName(entity.getFirstName());
+                dto.setMiddleName(entity.getMiddleName());
+                dto.setLastName(entity.getLastName());
+                dto.setPassword(entity.getPassword());
+                dto.setUsername(entity.getUsername());
+                dto.setPhone(entity.getPhone());
+                dto.setRole(entity.getRole());
+                dto.setDepartment(entity.getDepartment().getName());
+                dtos.add(dto);
+            }
         }
         return dtos;
     }
@@ -99,12 +122,14 @@ public class UserUtils {
         List<UserDtoForTable> dtos = new ArrayList<>();
         for (User entity : entities) {
             UserDtoForTable dto = new UserDtoForTable();
-            dto.setId(entity.getId());
-            dto.setRole(entity.getRole());
-            dto.setDepartment(entity.getDepartment().getName());
-            dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
-            dto.setEmail(entity.getEmail());
-            dtos.add(dto);
+            if(!entity.getDeleted()) {
+                dto.setId(entity.getId());
+                dto.setRole(entity.getRole());
+                dto.setDepartment(entity.getDepartment().getName());
+                dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
+                dto.setEmail(entity.getEmail());
+                dtos.add(dto);
+            }
         }
         return dtos;
     }

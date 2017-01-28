@@ -26,12 +26,12 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ShortView createUser(@RequestBody UserDto userDto) {
+    public UserDto createUser(@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public String updateUser(@RequestBody UserDto userDto) {
+    public ShortView updateUser(@RequestBody UserDto userDto) {
         return userService.updateUser(userDto);
     }
 

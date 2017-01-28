@@ -26,6 +26,7 @@ public class User implements Serializable{
 	private String description;
 	private List<TestResult> testResults;
 	private RoleEnum role;
+	private Boolean isDeleted = false;
 
 	public User() {
 	}
@@ -149,5 +150,13 @@ public class User implements Serializable{
 	public void setTestResults(List<TestResult> testResults) {
 		this.testResults = testResults;
 	}
-	
+
+	@Column
+	public Boolean getDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
+	}
 }

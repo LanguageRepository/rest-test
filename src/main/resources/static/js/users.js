@@ -148,15 +148,7 @@ $(document).ready(function getAllUsersForTable() {
                     result.push(item.department);
                     result.push(item.role);
                     result.push(item.email);
-                    result.push("<div class=\"dropdown\">" +
-                        "<button class=\"btn btn-success dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">Опции" +
-                        "<span class=\"caret\"></span>" +
-                        "</button>" +
-                        "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">" +
-                        "<li><a href=\"/cpanel/" + item.id + "\">Редактировать</a></li>" +
-                        "<li><a href=\"#\">Удалить</a></li>" +
-                        "</ul>" +
-                        "</div>");
+                    result.push(createDropdown(item));
                     return result;
                 })
             });
@@ -169,7 +161,7 @@ $(document).ready(function () {
 });
 
 function updateUser() {
-    var id = $("#short-username").val();
+    var checkOperation = document.getElementById('reset-btn').getAttribute('disabled');
     var username = $("#login_form").val();
     var password = $("#pswd").val();
     var email = $("#email_form").val();
@@ -180,7 +172,6 @@ function updateUser() {
     var department = localStorage.getItem("current_dep_id");
     var role = $("#role_choose").find("option:selected").text();
     var resultJson = {
-        "id" : 1,
         "username" : username,
         "password" : password,
         "role" : role,
@@ -192,20 +183,57 @@ function updateUser() {
         "department_id" : department
     };
     console.log(JSON.stringify(resultJson));
-    $.ajax({
-        type : "PUT",
-        contentType : "application/json",
-        url : "/user/",
-        data : JSON.stringify(resultJson),
-        dataType : 'json',
-        success : function (data) {
-            alert("Пользователь" + data.name + " успешно обновлён");
-        },
-        error : function () {
-            alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
-        }
-    });
+    if(checkOperation) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: "/user/",
+            data: JSON.stringify(resultJson),
+            dataType: 'json',
+            mimeType: "application/json",
+            success: function (data) {
+                alert("Пользователь" + data.name + " успешно обновлён");
+                console.log(data.name);
+            },
+            error: function () {
+                alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/user/",
+            data: JSON.stringify(resultJson),
+            dataType: 'json',
+            success: function (data) {
+                alert("Пользователь" + data.name + " успешно создан");
+            },
+            error: function () {
+                alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
+            }
+        });
+    }
 }
 
+function unlockButton() {
+    $("#login_form").attr("disabled", false);
+}
 
-
+function createDropdown(item) {
+    let dropdown = "<div class='dropdown'>" +
+        "<button class='btn btn-success dropdown-toggle' " +
+        "type='button' id='dropdownMenu1' " +
+        "data-toggle='dropdown' " +
+        "aria-haspopup='true' " +
+        "aria-expanded='true'>Опции" +
+        "<span class='caret'></span>" +
+        "</button>" +
+        "<ul class='dropdown-menu' " +
+        "aria-labelledby='dropdownMenu1'>" +
+        `<li><a href='/cpanel/${item.id}'>Редактировать</a></li>` +
+        "<li><a href='#'>Удалить</a></li>" +
+        "</ul>" +
+        "</div>";
+    return dropdown;
+}
