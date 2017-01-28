@@ -232,8 +232,18 @@ function createDropdown(item) {
         "<ul class='dropdown-menu' " +
         "aria-labelledby='dropdownMenu1'>" +
         `<li><a href='/cpanel/${item.id}'>Редактировать</a></li>` +
-        "<li><a href='#'>Удалить</a></li>" +
+        `<li><a href='' onclick='saveDelete(${item.id})'>Удалить</a></li>` +
         "</ul>" +
         "</div>";
     return dropdown;
+}
+
+function saveDelete(id) {
+    $.ajax({
+        url     : `/user/delete/${id}`,
+        type    : `DELETE`,
+        success : function (data) {
+            console.log(data.message);
+        }
+    });
 }

@@ -82,4 +82,10 @@ public class UserRestController {
         return userService.getCurrentAuthenticatedUser();
     }
 
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public RestResult saveDelete(@PathVariable("id") Long id) {
+        userService.saveDelete(id);
+        return new RestResult("OK", "Пользователь заморожен");
+    }
+
 }

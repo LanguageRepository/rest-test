@@ -110,4 +110,9 @@ public class UserService {
         return userUtils.convertEntityToDto(userJpaRepository.getUserByUsername(username));
     }
 
+    public void saveDelete(Long id) {
+        userJpaRepository.getOne(id).setDeleted(true);
+        userJpaRepository.getOne(id).setEnabled(false);
+    }
+
 }
