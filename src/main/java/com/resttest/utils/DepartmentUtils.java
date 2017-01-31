@@ -2,6 +2,7 @@ package com.resttest.utils;
 
 import com.resttest.dto.department.DepartmentDto;
 import com.resttest.dto.department.ShortViewForDepartment;
+import com.resttest.dto.department.ShortViewWithType;
 import com.resttest.model.Department;
 import com.resttest.repository.DepartmentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by kvasa on 15.01.2017.
@@ -60,6 +62,41 @@ public class DepartmentUtils {
         shortView.setChildren(childs);
         shortView.setText(department.getName());
         return shortView;
+    }
+
+    public List<ShortViewWithType> convertEntitiesToShortView(List<Department> entities) {
+        List<ShortViewWithType> shortViews = new ArrayList<>();
+        for (Department entity : entities) {
+            ShortViewWithType shortView = new ShortViewWithType();
+            shortView.setId(entity.getId());
+            shortView.setName(entity.getName());
+            shortView.setType(entity.getType());
+            shortViews.add(shortView);
+        }
+        return shortViews;
+    }
+
+    public Department convertShortViewToEntity(ShortViewWithType shortView) {
+        Department department = new Department();
+        if(Objects.equals(repository.getOne(shortView.getParent_id()).getType(), "unv")) {
+            shortView.setType("fclt");
+        } else if(Objects.equals(repository.getOne(shortView.getParent_id()).getType(), "fclt")) {
+            shortView.setType("caf");
+        } else if(Objects.equals(repository.getOne(shortView.getParent_id()).getType(), "caf")) {
+            shortView.setType("group");
+        } else {
+            shortView.setType("other");
+        }
+        department.setParent(repository.getOne(shortView.getParent_id()));
+        department.setType(shortView.getType());
+        department.setName(shortView.getName());
+        return department;
+    }
+
+    public Department convertShortViewToEntityForPut(ShortViewWithType shortView) {
+        Department department = repository.getOne(shortView.getParent_id());
+        department.setName(shortView.getName());
+        return department;
     }
 
 }

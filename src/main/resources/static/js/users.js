@@ -4,7 +4,7 @@
 
 const username = localStorage.getItem("usernameLoginForm");
 
-const validator = {
+const userValidator = {
     rules : {
         form_login : {
             required:true,
@@ -67,6 +67,19 @@ const validator = {
     }
 };
 
+const departmentValidator = {
+    rules : {
+        department_name : {
+            required:true
+        }
+    },
+    messages : {
+        department_name : {
+            required: "Поле 'Подразделение должно быть заполнено'"
+        }
+    }
+};
+
 function departmentToTree(json) {
     $(function() {
         $('#tree').jstree({
@@ -111,7 +124,7 @@ $(document).ready(function () {
             $("#short-name").text(data.firstName);
             $("#short-description").text(`${data.department}(ID: ${data.department_id})`);
             $("#short-username").text(data.id);
-            $(`#role_choose :contains(${data.role})`).attr("selected", true);
+            $(`#role_choose :contains(${data.simpleRole})`).attr("selected", true);
             localStorage.setItem("dep_id", data.department_id);
         }
     });
@@ -132,6 +145,32 @@ $(document).ready(function getAllDepartment() {
     });
 });
 
+$(document).ready(function () {
+    $.ajax({
+        url: "/department/all/short",
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        mimeType: "application/json",
+        success: function (data) {
+            for(let i = 0; i < data.length; i++) {
+                console.log(i + data[i].name);
+                if(data[i].type == "unv") {
+                    $("#univ").append(`<option value="${data[i].id}">${data[i].name}</option>`);
+                }else if(data[i].type == "fclt") {
+                    $("#facult").append(`<option value="${data[i].id}">${data[i].name}</option>`);
+                }else if(data[i].type == "caf") {
+                    $("#cafedra").append(`<option value="${data[i].id}">${data[i].name}</option>`);
+                }else if(data[i].type == "group") {
+                    $("#group").append( `<option value="${data[i].id}">${data[i].name}</option>`);
+                }else {
+                    $("#other").append( `<option value="${data[i].id}">${data[i].name}</option>`);
+                }
+            }
+        }
+    });
+});
+
 $(document).ready(function getAllUsersForTable() {
     $.ajax({
         url: "/user/fortable",
@@ -142,13 +181,16 @@ $(document).ready(function getAllUsersForTable() {
         success: function (data) {
             $('#usersTable').dataTable({
                 responsive: true,
+                "aoColumnDefs": [
+                    { "sWidth": "93px", "aTargets": [ 4 ] }
+                ],
                 "aaData": data.map(item => {
                     var result = [];
                     result.push("<p id='"+ item.id +"'>" + item.fullName + "</p>");
                     result.push(item.department);
-                    result.push(item.role);
+                    result.push(item.simpleRole);
                     result.push(item.email);
-                    result.push(createDropdown(item));
+                    result.push(createButtons(item));
                     return result;
                 })
             });
@@ -157,62 +199,76 @@ $(document).ready(function getAllUsersForTable() {
 });
 
 $(document).ready(function () {
-    $("#user-creation-form").validate(validator);
+    $("#user-creation-form").validate(userValidator);
+    $("#department_form_creation").validate(departmentValidator);
+});
+
+$(document).ready(function () {
+    $(`.selectpicker`).selectpicker({
+        style : `btn-info`,
+        size  : 4
+    })
 });
 
 function updateUser() {
-    var checkOperation = document.getElementById('reset-btn').getAttribute('disabled');
-    var username = $("#login_form").val();
-    var password = $("#pswd").val();
-    var email = $("#email_form").val();
-    var firstName = $("#firstname_form").val();
-    var lastName = $("#lastname_form").val();
-    var middleName = $("#middlename_form").val();
-    var description = $("#description_form").val();
-    var department = localStorage.getItem("current_dep_id");
-    var role = $("#role_choose").find("option:selected").text();
-    var resultJson = {
-        "username" : username,
-        "password" : password,
-        "role" : role,
-        "lastName" : lastName,
-        "firstName" : firstName,
-        "middleName" : middleName,
-        "email" : email,
-        "description" : description,
-        "department_id" : department
+    let username = $("#login_form").val(),
+        password = $("#pswd").val(),
+        email = $("#email_form").val(),
+        firstName = $("#firstname_form").val(),
+        lastName = $("#lastname_form").val(),
+        middleName = $("#middlename_form").val(),
+        description = $("#description_form").val(),
+        department = localStorage.getItem("current_dep_id"),
+        role = $("#role_choose").find("option:selected").text(),
+        notify = false;
+    if($('#notify').prop('checked')) {
+        notify = true;
+    }
+    let resultJson = {
+        "username": username,
+        "password": password,
+        "role": role,
+        "lastName": lastName,
+        "firstName": firstName,
+        "middleName": middleName,
+        "email": email,
+        "description": description,
+        "department_id": department,
+        "notifyByMail": notify
     };
     console.log(JSON.stringify(resultJson));
-    if(checkOperation) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: "/user/",
-            data: JSON.stringify(resultJson),
-            dataType: 'json',
-            mimeType: "application/json",
-            success: function (data) {
-                alert("Пользователь" + data.name + " успешно обновлён");
-                console.log(data.name);
-            },
-            error: function () {
-                alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
-            }
-        });
-    } else {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/user/",
-            data: JSON.stringify(resultJson),
-            dataType: 'json',
-            success: function (data) {
-                alert("Пользователь" + data.name + " успешно создан");
-            },
-            error: function () {
-                alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
-            }
-        });
+    if(!(username == "" || password == "" || email == "" || role == "")) {
+        if ($("#login_form").prop("disabled")) {
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                url: "/user/",
+                data: JSON.stringify(resultJson),
+                dataType: 'json',
+                mimeType: "application/json",
+                success: function (data) {
+                    alert("Пользователь" + data.name + " успешно обновлён");
+                    console.log(data.name);
+                },
+                error: function () {
+                    alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
+                }
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/",
+                data: JSON.stringify(resultJson),
+                dataType: 'json',
+                success: function (data) {
+                    alert("Пользователь" + data.name + " успешно создан");
+                },
+                error: function () {
+                    alert("Пожалуйста, заполните необходимые поля перед отправкой запроса");
+                }
+            });
+        }
     }
 }
 
@@ -220,30 +276,69 @@ function unlockButton() {
     $("#login_form").attr("disabled", false);
 }
 
-function createDropdown(item) {
-    let dropdown = "<div class='dropdown'>" +
-        "<button class='btn btn-success dropdown-toggle' " +
-        "type='button' id='dropdownMenu1' " +
-        "data-toggle='dropdown' " +
-        "aria-haspopup='true' " +
-        "aria-expanded='true'>Опции" +
-        "<span class='caret'></span>" +
-        "</button>" +
-        "<ul class='dropdown-menu' " +
-        "aria-labelledby='dropdownMenu1'>" +
-        `<li><a href='/cpanel/${item.id}'>Редактировать</a></li>` +
-        `<li><a href='' onclick='saveDelete(${item.id})'>Удалить</a></li>` +
-        "</ul>" +
-        "</div>";
-    return dropdown;
+function createButtons(item) {
+    return `<div class="btn-group pull-right" role="group">` +
+        `<a class="btn btn-primary btn-fill" href="/cpanel/${item.id}" role="button">Обновить</a>` +
+        `<button class="btn btn-primary"` +
+        `type="submit" onclick="saveDelete(${item.id})">Удалить</button></div>`;
 }
 
 function saveDelete(id) {
-    $.ajax({
-        url     : `/user/delete/${id}`,
-        type    : `DELETE`,
-        success : function (data) {
-            console.log(data.message);
+    if(confirm("Удалить пользователя?")) {
+        $.ajax({
+            url: `/user/delete/${id}`,
+            type: `DELETE`,
+            success: function (data) {
+                console.log(data.message);
+            }
+        });
+        location.reload(true);
+    }
+}
+
+function createDepartment() {
+    if($("#department-update").attr("disabled", true)) {
+        updateDepartment();
+    } else {
+        let department = $("#department-input").val(),
+            parent_department = $("#parent-select").find(":selected").val(),
+            result = {
+                "name": department,
+                "parent_id": parent_department
+            };
+        if (!(department == "")) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/department/",
+                data: JSON.stringify(result),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(true);
+                }
+            });
         }
-    });
+    }
+}
+
+function updateDepartment() {
+    $("#department_choose").text("Выберете узел для обновления");
+    $("#department-update").attr("disabled", true);
+    let department = $("#department-input").val(),
+        department_choose = $("#parent-select").find(":selected").val(),
+        result = {
+            "name"      : department,
+            "parent_id" : department_choose
+        };
+    if(!(department == "")) {
+        $.ajax({
+            type : "PUT",
+            contentType : "application/json",
+            url : "/department",
+            data: JSON.stringify(result),
+            success : function () {
+                console.log("Подразделение создано");
+            }
+        })
+    }
 }

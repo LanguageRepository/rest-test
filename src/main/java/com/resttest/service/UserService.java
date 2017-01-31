@@ -3,6 +3,7 @@ package com.resttest.service;
 import com.resttest.dto.ShortView;
 import com.resttest.dto.user.UserDto;
 import com.resttest.dto.user.UserDtoForTable;
+import com.resttest.model.MailTemplate;
 import com.resttest.model.User;
 import com.resttest.repository.UserJpaRepository;
 import com.resttest.utils.RestResult;
@@ -26,6 +27,9 @@ public class UserService {
     private UserJpaRepository userJpaRepository;
 
     @Autowired
+    private MailService mailService;
+
+    @Autowired
     private UserUtils userUtils;
 
     @Transactional
@@ -35,12 +39,25 @@ public class UserService {
 
     @Transactional
     public UserDto createUser(UserDto dto) {
+        if(dto.getNotifyByMail()) {
+            MailTemplate mailTemplate = new MailTemplate(dto.getEmail(), "Ваш аккаунт создан",
+                    "Здраствуйте " + dto.getFirstName() + ", Ваш аккаунт создан администратором." +
+                            "Данные для входа: " +
+                            "Логин: '" + dto.getUsername() + "' , Пароль: '" + dto.getPassword() + "'");
+            mailService.sendMail(mailTemplate);
+        }
         return userUtils.convertEntityToDto(
                 userJpaRepository.save(userUtils.convertDtoToEntityForPost(dto)));
     }
 
     @Transactional
     public ShortView updateUser(UserDto dto) {
+        if(dto.getNotifyByMail()) {
+            MailTemplate mailTemplate = new MailTemplate(dto.getEmail(), "Изменение пароля",
+                    "Здраствуйте " + dto.getFirstName() + ", Ваш пароль был изменён администратором." +
+            " Ваш новый пароль: " + dto.getPassword());
+            mailService.sendMail(mailTemplate);
+        }
         return userUtils.convertUserToShortView(
                 userJpaRepository.save(userUtils.convertDtoToEntityForPut(dto)));
     }

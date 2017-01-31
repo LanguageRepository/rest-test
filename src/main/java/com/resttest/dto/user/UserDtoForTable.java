@@ -1,7 +1,5 @@
 package com.resttest.dto.user;
 
-import com.resttest.model.RoleEnum;
-
 /**
  * Created by kvasa on 07.01.2017.
  */
@@ -10,7 +8,7 @@ public class UserDtoForTable {
     private Long id;
     private String fullName;
     private String department;
-    private RoleEnum role;
+    private String simpleRole;
     private String email;
 
     public Long getId() {
@@ -45,11 +43,11 @@ public class UserDtoForTable {
         this.department = department;
     }
 
-    public RoleEnum getRole() {
-        return role;
+    public String getSimpleRole() {
+        return simpleRole;
     }
 
-    public void setRole(RoleEnum role) {
-        this.role = role;
+    public void setSimpleRole(String simpleRole) {
+        this.simpleRole = simpleRole;
     }
 }

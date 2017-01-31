@@ -1,7 +1,5 @@
 package com.resttest.dto;
 
-import com.resttest.model.Question;
-
 /**
  * Created by kvasa on 01.01.2017.
  */
@@ -9,7 +7,7 @@ public class AnswerDto {
 
     private Long id;
     private String answer;
-    private Question question;
+    private Long questionId;
     private String rightValue;
 
     public Long getId() {
@@ -28,12 +26,12 @@ public class AnswerDto {
         this.answer = answer;
     }
 
-    public Question getQuestion() {
-        return question;
+    public Long getQuestionId() {
+        return questionId;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
     }
 
     public String getRightValue() {

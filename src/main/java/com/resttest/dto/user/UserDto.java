@@ -1,7 +1,5 @@
 package com.resttest.dto.user;
 
-import com.resttest.model.RoleEnum;
-
 /**
  * Created by kvasa on 01.01.2017.
  */
@@ -10,7 +8,7 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
-    private RoleEnum role;
+    private String simpleRole;
     private String lastName;
     private String firstName;
     private String middleName;
@@ -19,6 +17,7 @@ public class UserDto {
     private String description;
     private String department;
     private Long department_id;
+    private Boolean notifyByMail;
 
     public Long getId() {
         return id;
@@ -44,12 +43,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public RoleEnum getRole() {
-        return role;
+    public String getSimpleRole() {
+        return simpleRole;
     }
 
-    public void setRole(RoleEnum role) {
-        this.role = role;
+    public void setSimpleRole(String simpleRole) {
+        this.simpleRole = simpleRole;
     }
 
     public Long getDepartment_id() {
@@ -114,5 +113,13 @@ public class UserDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getNotifyByMail() {
+        return notifyByMail;
+    }
+
+    public void setNotifyByMail(Boolean notifyByMail) {
+        this.notifyByMail = notifyByMail;
     }
 }

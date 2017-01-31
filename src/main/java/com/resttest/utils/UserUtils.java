@@ -3,6 +3,7 @@ package com.resttest.utils;
 import com.resttest.dto.ShortView;
 import com.resttest.dto.user.UserDto;
 import com.resttest.dto.user.UserDtoForTable;
+import com.resttest.model.RoleEnum;
 import com.resttest.model.User;
 import com.resttest.repository.DepartmentJpaRepository;
 import com.resttest.repository.UserJpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by kvasa on 02.01.2017.
@@ -39,7 +41,7 @@ public class UserUtils {
         dto.setPassword(user.getPassword());
         dto.setUsername(user.getUsername());
         dto.setPhone(user.getPhone());
-        dto.setRole(user.getRole());
+        dto.setSimpleRole(convertRoleEnumToSimpleRole(user.getRole()));
         dto.setDepartment(user.getDepartment().getName());
         dto.setDepartment_id(user.getDepartment().getId());
         return dto;
@@ -51,7 +53,7 @@ public class UserUtils {
         entity.setId(id);
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
+        entity.setRole(convertSimpleRoleToRoleEnum(dto.getSimpleRole()));
         entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
@@ -64,9 +66,15 @@ public class UserUtils {
 
     public User convertDtoToEntityForPost(UserDto dto) {
         User entity = new User();
+        if(Objects.equals(dto.getSimpleRole(), "Преподаватель")) {
+            entity.setRole(RoleEnum.ROLE_TEACHER);
+        } else if(Objects.equals(dto.getSimpleRole(), "Студент")) {
+            entity.setRole(RoleEnum.ROLE_STUDENT);
+        } else if(Objects.equals(dto.getSimpleRole(), "Администратор")) {
+            entity.setRole(RoleEnum.ROLE_ADMIN);
+        }
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
         entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
         entity.setPhone(dto.getPhone());
         entity.setDescription(dto.getDescription());
@@ -82,7 +90,7 @@ public class UserUtils {
         List<UserDto> dtos = new ArrayList<>();
         for (User entity : entities) {
             UserDto dto = new UserDto();
-            if(entity.getDeleted() == false) {
+            if(!entity.getDeleted()) {
                 dto.setId(entity.getId());
                 dto.setDescription(entity.getDescription());
                 dto.setEmail(entity.getEmail());
@@ -92,7 +100,7 @@ public class UserUtils {
                 dto.setPassword(entity.getPassword());
                 dto.setUsername(entity.getUsername());
                 dto.setPhone(entity.getPhone());
-                dto.setRole(entity.getRole());
+                dto.setSimpleRole(convertRoleEnumToSimpleRole(entity.getRole()));
                 dto.setDepartment(entity.getDepartment().getName());
                 dtos.add(dto);
             }
@@ -124,7 +132,7 @@ public class UserUtils {
             UserDtoForTable dto = new UserDtoForTable();
             if(!entity.getDeleted()) {
                 dto.setId(entity.getId());
-                dto.setRole(entity.getRole());
+                dto.setSimpleRole(convertRoleEnumToSimpleRole(entity.getRole()));
                 dto.setDepartment(entity.getDepartment().getName());
                 dto.setFullName(entity.getLastName() + " " + entity.getFirstName() + " " + entity.getMiddleName());
                 dto.setEmail(entity.getEmail());
@@ -134,8 +142,26 @@ public class UserUtils {
         return dtos;
     }
 
-    public ShortView convertUserToExtendedShortView() {
-        return null;
+    private RoleEnum convertSimpleRoleToRoleEnum(String simpleRole) {
+        if(Objects.equals(simpleRole, "Администратор")) {
+            return RoleEnum.ROLE_ADMIN;
+        } else if(Objects.equals(simpleRole, "Студент")) {
+            return RoleEnum.ROLE_STUDENT;
+        } else if(Objects.equals(simpleRole, "Преподаватель")) {
+            return RoleEnum.ROLE_TEACHER;
+        }
+        return RoleEnum.ROLE_STUDENT;
+    }
+
+    private String convertRoleEnumToSimpleRole(RoleEnum role) {
+        if(role == RoleEnum.ROLE_ADMIN) {
+            return "Администратор";
+        } else if(role == RoleEnum.ROLE_STUDENT) {
+            return "Студент";
+        } else if(role == RoleEnum.ROLE_TEACHER) {
+            return "Преподаватель";
+        }
+        return "Студент";
     }
 
 }

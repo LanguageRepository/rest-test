@@ -21,9 +21,12 @@
     <!--  Light Bootstrap Table core CSS    -->
     <link href="../../static/admin-pages/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
 
+    <!--Bootstrap select javascript plugin-->
+    <link rel="stylesheet" href="../../static/bSelect/css/bootstrap-select.min.css"/>
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="../../static/admin-pages/css/demo.css" rel="stylesheet" />
+    <link href="../../static/npogress/nprogress.css" rel="stylesheet"/>
 
     <link href="../../static/jstree/themes/default/style.min.css" rel="stylesheet"/>
     <link href="../../static/jstree/themes/proton/style.min.css" rel="stylesheet"/>
@@ -32,6 +35,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="../../static/admin-pages/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <link href="../../static/css/style.css" rel="stylesheet"/>
+
 </head>
 <body>
 
@@ -136,25 +140,31 @@
                             <div class="content">
                                 <form id="user-creation-form">
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Подразделение</label>
                                                 <input id="department_form" type="text" class="form-control" disabled placeholder="Company" value="">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Логин</label>
                                                 <input id="login_form" name="form_login" type="text" disabled class="form-control" placeholder="Username" value="">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="email_form">Email </label>
-                                                <input id="email_form" name="form_email" type="email" class="form-control" placeholder="Email">
+                                                <label>E-mail</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input id="notify" type="checkbox" aria-label="...">
+                                                    </span>
+                                                    <input id="email_form" name="form_email" type="email" class="form-control" placeholder="Email">
+                                                </div><!-- /input-group -->
                                             </div>
-                                        </div>
+                                        </div><!-- /.col-lg-6 -->
+
                                     </div>
 
                                     <div class="row">
@@ -208,9 +218,9 @@
                                             <div class="form-group">
                                                 <label>Роль</label>
                                                 <select id="role_choose" class="form-control">
-                                                    <option>ROLE_STUDENT</option>
-                                                    <option>ROLE_TEACHER</option>
-                                                    <option>ROLE_ADMIN</option>
+                                                    <option>Студент</option>
+                                                    <option>Преподаватель</option>
+                                                    <option>Администратор</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -223,9 +233,9 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-info btn-fill pull-right" onclick="updateUser()">Обновить пользователя</button>
+                                    <button class="btn btn-info btn-fill pull-right" onclick="updateUser()">Сохранить</button>
                                     <div class="clearfix">
-                                        <button id="reset-btn" type="reset" class="btn btn-warning" onclick="unlockButton()">Очистить</button>
+                                        <button id="reset-btn" type="reset" class="btn btn-warning" onclick="unlockButton()">Создать пользователя</button>
                                     </div>
                                 </form>
                             </div>
@@ -233,50 +243,51 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card card-user">
-                            <div class="image">
-                                <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="..."/>
-                            </div>
-                            <div class="content">
-                                <div class="author">
-                                     <a href="">
-                                    <img class="avatar border-gray" src="../../static/admin-pages/img/faces/face-3.jpg" alt="..."/>
-
-                                      <h4 id="short-name" class="title">Name<br />
-                                         <h5 id="short-username"></h5>
-                                      </h4>
-                                    </a>
-                                </div>
-                                <p id="short-description" class="description text-center"> Description
-                                </p>
-                            </div>
-                            <hr>
-                            
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
                             <div class="header">
                                 <h4 class="title">Создать подразделение</h4>
                             </div>
                             <div class="content">
-                                <div class="row">
-                                    <div class="col-md-3">
-
+                                <form id="department_form_creation">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Название</label>
+                                                <input id="department-input" name="department_name" class="form-control" type="text" placeholder="Название">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label id="department_choose" for="parent-select">Выберите родительский узел</label>
+                                                <select id="parent-select" class="form-control">
+                                                    <optgroup id="univ" label="Университет">
+                                                    </optgroup>
+                                                    <optgroup id="facult" label="Факультет">
+                                                    </optgroup>
+                                                    <optgroup id="cafedra" label="Кафедра">
+                                                    </optgroup>
+                                                    <optgroup id="group" label="Группа">
+                                                    </optgroup>
+                                                    <optgroup id="other" label="Остальные"></optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input id="department-update" type="reset" class="btn btn-success btn-fill" onclick="updateDepartment()" value="Обновить">
+                                            <input id="department-submit" type="submit" class="btn btn-primary pull-right" onclick="createDepartment()" value="Сохранить">
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
+                            <hr>
                     </div>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -319,5 +330,11 @@
     <script src="../../static/js/users.js"></script>
 
     <script src="../../static/jquery_validation/jquery.validate.min.js"></script>
+
+    <script src="../../static/bSelect/js/bootstrap-select.min.js"></script>
+
+    <script src="../../static/npogress/nprogress.js"></script>
+
+    <script src="../../static/js/main.js"></script>
 
 </html>
