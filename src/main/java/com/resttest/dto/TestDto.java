@@ -1,7 +1,6 @@
 package com.resttest.dto;
 
 import com.resttest.model.Paragraph;
-import com.resttest.model.Question;
 
 import java.util.List;
 
@@ -12,9 +11,9 @@ public class TestDto {
 
     private Long id;
     private String name;
-    private String owner;
+    private Long ownerId;
     private Paragraph paragraph;
-    private List<Question> questions;
+    private List<QuestionDto> questions;
 
     public Long getId() {
         return id;
@@ -32,12 +31,12 @@ public class TestDto {
         this.name = name;
     }
 
-    public String getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Paragraph getParagraph() {
@@ -48,11 +47,11 @@ public class TestDto {
         this.paragraph = paragraph;
     }
 
-    public List<Question> getQuestions() {
+    public List<QuestionDto> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(List<QuestionDto> questions) {
         this.questions = questions;
     }
 }

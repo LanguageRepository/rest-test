@@ -1,7 +1,5 @@
 package com.resttest.dto;
 
-import com.resttest.model.Answer;
-
 import java.util.List;
 
 /**
@@ -11,7 +9,7 @@ public class QuestionDto {
 
     private Long id;
     private String question;
-    private List<Answer> answers;
+    private List<AnswerDto> answers;
     private Long testId;
 
     public Long getId() {
@@ -30,11 +28,11 @@ public class QuestionDto {
         this.question = question;
     }
 
-    public List<Answer> getAnswers() {
+    public List<AnswerDto> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Answer> answers) {
+    public void setAnswers(List<AnswerDto> answers) {
         this.answers = answers;
     }
 
