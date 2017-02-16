@@ -1,22 +1,14 @@
 package com.resttest.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Answer {
 	private Long id;
 	private String answer;
 	private Question question;
+	private AnswerType type;
 	private String rightValue;
-
-	public Answer() {
-
-	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -44,6 +36,16 @@ public class Answer {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	public AnswerType getType() {
+		return type;
+	}
+
+	public void setType(AnswerType type) {
+		this.type = type;
 	}
 
 	@Column

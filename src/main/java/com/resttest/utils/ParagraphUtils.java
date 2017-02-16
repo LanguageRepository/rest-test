@@ -1,10 +1,11 @@
 package com.resttest.utils;
 
-import com.resttest.dto.ParagraphDto;
+import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
+import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.model.Paragraph;
 import com.resttest.model.Test;
-import com.resttest.repository.ParagraphJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import java.util.List;
  */
 @Component
 public class ParagraphUtils {
+
+    @Autowired
+    private ParagraphUtils paragraphUtils;
 
     public ParagraphDto convertEntityToDto(Paragraph entity) {
         ParagraphDto dto = new ParagraphDto();
@@ -71,13 +75,25 @@ public class ParagraphUtils {
 
     public List<ShortView> convertParagraphsToShortViews(List<Paragraph> entities) {
         List<ShortView> shortViews = new ArrayList<>();
-        for(int i = 0; i < entities.size(); i++) {
+        for (Paragraph entity : entities) {
             ShortView shortView = new ShortView();
-            shortView.setId(entities.get(i).getId());
-            shortView.setName(entities.get(i).getName());
+            shortView.setId(entity.getId());
+            shortView.setName(entity.getName());
             shortViews.add(shortView);
         }
         return shortViews;
+    }
+
+    public ParagraphDtoForTree convertEntityToDtoFroTree(Paragraph entity) {
+        ParagraphDtoForTree dto = new ParagraphDtoForTree();
+        List<ParagraphDtoForTree> childs = new ArrayList<>();
+        for (int i = 0; i < entity.getChilds().size(); i++) {
+            childs.add(paragraphUtils.convertEntityToDtoFroTree(entity.getChilds().get(i)));
+        }
+        dto.setId(entity.getId());
+        dto.setChildren(childs);
+        dto.setText(entity.getName());
+        return dto;
     }
 
 }

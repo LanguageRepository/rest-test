@@ -1,8 +1,8 @@
 package com.resttest.controller;
 
-import com.resttest.dto.ParagraphDto;
+import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
-import com.resttest.model.Paragraph;
+import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.service.ParagraphService;
 import com.resttest.utils.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ParagraphRestController {
     @Autowired
     private ParagraphService paragraphService;
 
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public ParagraphDto getParagraph(@PathVariable("id") Long id) {
         return paragraphService.getParagraph(id);
     }
@@ -35,18 +35,23 @@ public class ParagraphRestController {
         return paragraphService.updateParagraph(dto);
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public RestResult deleteParagraph(@PathVariable("id") Long id) {
         return paragraphService.deleteParagraph(id);
     }
 
-    @RequestMapping(value = "/get/short/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/short/{id}", method = RequestMethod.GET, produces = "application/json")
     public ShortView getShortParagraph(@PathVariable("id") Long id) {
         return paragraphService.getShortParagraph(id);
     }
 
-    @RequestMapping(value = "/get/short", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/short/all", method = RequestMethod.GET, produces = "application/json")
     public List<ShortView> getShortParagraphs() {
         return paragraphService.getShortParagraphs();
+    }
+
+    @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
+    public ParagraphDtoForTree getRootParagraph() {
+        return paragraphService.getRootNode();
     }
 }

@@ -1,14 +1,7 @@
 package com.resttest.model;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Test {
@@ -17,6 +10,7 @@ public class Test {
 	private User owner;
 	private Paragraph paragraph;
 	private List<Question> questions;
+	private String description;
 	
 	public Test() {
 		
@@ -67,5 +61,13 @@ public class Test {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
-	
+
+	@Column(name = "description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

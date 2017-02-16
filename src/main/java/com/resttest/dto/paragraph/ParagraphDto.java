@@ -1,7 +1,7 @@
-package com.resttest.dto;
+package com.resttest.dto.paragraph;
 
+import com.resttest.dto.ShortView;
 import com.resttest.model.Paragraph;
-import com.resttest.model.Test;
 
 import java.util.List;
 

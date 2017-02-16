@@ -1,8 +1,8 @@
 package com.resttest.service;
 
-import com.resttest.dto.ParagraphDto;
+import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
-import com.resttest.model.Paragraph;
+import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.repository.ParagraphJpaRepository;
 import com.resttest.utils.ParagraphUtils;
 import com.resttest.utils.RestResult;
@@ -57,6 +57,11 @@ public class ParagraphService {
     @Transactional
     public List<ShortView> getShortParagraphs() {
         return paragraphUtils.convertParagraphsToShortViews(paragraphJpaRepository.findAll());
+    }
+
+    @Transactional
+    public ParagraphDtoForTree getRootNode() {
+        return paragraphUtils.convertEntityToDtoFroTree(paragraphJpaRepository.getOne(1l));
     }
 
 }
