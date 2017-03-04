@@ -20,10 +20,12 @@
     <!--  Light Bootstrap Table core CSS    -->
     <link href="../../static/admin-pages/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
 
+    <link rel="stylesheet" href="../../static/smde/simplemde.min.css">
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="../../static/admin-pages/css/demo.css" rel="stylesheet" />
-
+    
+    <link rel="stylesheet" href="../../static/css/style.css"/>
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -42,9 +44,18 @@
 
     <!--  Notifications Plugin    -->
     <script src="../../static/admin-pages/js/bootstrap-notify.js"></script>
-
     
+    <script src="../../static/jquery_validation/jquery.validate.min.js"></script>
+
+    <script src="../../static/smde/simplemde.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
     <script src="../../static/js/test.js"></script>
+
+    <script src="../../static/js/questions.js"></script>
+
+    <script src="../../static/js/question.js"></script>
 
 </head>
 <body>
@@ -53,7 +64,6 @@
     <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
-
 
     	<div class="sidebar-wrapper">
             <div class="logo">
@@ -148,43 +158,51 @@
                             <div class="header">
                                 <h4 class="title">Создать вопрос
                                     <div class="dropdown pull-right">
-                                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      <button class="btn btn-info btn-fill dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         Тип вопроса
                                         <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="#">Один правильный ответ</a></li>
-                                        <li><a href="#">Несколько правильных ответов</a></li>
-                                        <li><a href="#">Ручной ввод</a></li>
+                                        <li><a onclick="setManyRight()">Обычный способ</a></li>
+                                        <li><a onclick="setManualInput()">Ручной ввод ответа</a></li>
                                       </ul>
                                     </div>
                                 </h4>
                             </div>
                             <div class="content">
-                                <form>
+                                <form id="questionCreateForm">
                                     <div id="questionRow" class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Название вопроса</label>
-                                                <input type="text" class="form-control" id="question-input" placeholder="Текст вопроса">
+                                                <textarea name="form_question_name" rows="3" class="form-control" id="question-input" placeholder="Текст вопроса"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="answer" class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="checkbox" class="">
-                                                <label id="answer-label">Ответ</label>
-                                                <textarea placeholder="Текст ответа" class="form-control" rows="2" id="answer-area1"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-12">
+                                           <div class="form-group">
+                                                <table id="answer-creation" class="table table-condensed">
+                                                   <tbody id="tablebody">
+                                                        <tr>
+                                                           <th style="">Текст ответа</th>
+                                                           <th style="width: 2%">Верность</th>
+                                                        </tr>
+                                                        <tr id="row1">
+                                                            <td><textarea id="answer1" name="form_checkbox" class="form-control" rows="3" placeholder="Введите текст ответа..."></textarea></td>
+                                                            <td><input id="answerTypeInput1" type="checkbox" class="form-control"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                           </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <button id="saveQuestion" class="btn btn-success pull-right">Сохранить</button>
+                                                <input id="addAnswer" type="button" class="btn btn-success" value="Добавить ответ" onclick="addRow()">
+                                                <input id="deleteAnswer" type="button" class="btn btn-danger" value="Удалить ответ" onclick="deleteRow()">
+                                                <input id="saveQuestion" type="button" class="btn btn-success btn-fill pull-right" onclick="createQuestion()" value="Сохранить">
                                             </div>
                                         </div>
                                     </div>
@@ -208,6 +226,9 @@
     </div>
 </div>
 
+<script>
+
+</script>
 
 </body>
 

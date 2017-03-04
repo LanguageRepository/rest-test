@@ -31,8 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/tasks/**", "/profile/**", "/cpanel").access("hasRole('ROLE_ADMIN')");
-                //.anyRequest().authenticated();
+                .antMatchers("/tasks/**", "/profile/**", "/cpanel").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().authenticated();
         http
                 .formLogin()
                 .loginPage("/login")

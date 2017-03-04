@@ -45,4 +45,9 @@ public class TestService {
         return testUtils.convertEntitiesToDtosForTable(testJpaRepository.findAll());
     }
 
+    @Transactional
+    public List<TestDtoForTable> getTestsByParagraph(Long id) {
+        return testUtils.convertEntitiesToDtosForTable(testJpaRepository.findTestsByParagraphId(id));
+    }
+
 }

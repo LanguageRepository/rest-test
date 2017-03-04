@@ -2,6 +2,7 @@ package com.resttest.controller;
 
 import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
+import com.resttest.dto.paragraph.ParagraphDtoForCreate;
 import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.service.ParagraphService;
 import com.resttest.utils.RestResult;
@@ -26,8 +27,8 @@ public class ParagraphRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ShortView createParagraph(@RequestBody ParagraphDto dto) {
-        return paragraphService.createParagraph(dto);
+    public void createParagraph(@RequestBody ParagraphDtoForCreate dto) {
+        paragraphService.createParagraph(dto);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")

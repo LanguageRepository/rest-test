@@ -2,6 +2,7 @@ package com.resttest.service;
 
 import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
+import com.resttest.dto.paragraph.ParagraphDtoForCreate;
 import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.repository.ParagraphJpaRepository;
 import com.resttest.utils.ParagraphUtils;
@@ -30,8 +31,8 @@ public class ParagraphService {
     }
 
     @Transactional
-    public ShortView createParagraph(ParagraphDto dto) {
-        return paragraphUtils.convertParagraphToShortParagraph(paragraphJpaRepository.save(paragraphUtils.convertDtoToEntity(dto)));
+    public void createParagraph(ParagraphDtoForCreate dto) {
+        paragraphJpaRepository.save(paragraphUtils.convertDtoToEntityForCreateAndUpdate(dto));
     }
 
     @Transactional

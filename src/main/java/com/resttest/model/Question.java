@@ -1,14 +1,7 @@
 package com.resttest.model;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Question {
@@ -16,7 +9,8 @@ public class Question {
 	private String question;
 	private Test test;
 	private List<Answer> answers;
-	
+	private QuestionEnum type;
+
 	public Question() {
 		
 	}
@@ -57,5 +51,14 @@ public class Question {
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
 	}
-	
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	public QuestionEnum getType() {
+		return type;
+	}
+
+	public void setType(QuestionEnum type) {
+		this.type = type;
+	}
 }
