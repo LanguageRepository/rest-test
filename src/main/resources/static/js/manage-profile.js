@@ -1,51 +1,55 @@
 /**
  * Created by kvasa on 06.01.2017.
  */
+
+let currentUser = $.ajax({
+    url: "/user",
+    type: "GET",
+    dataType: "json",
+    contentType: "application/json",
+    mimeType: "application/json",
+    success: function (data) {
+        currentUser = data;
+    }
+});
+
+
 function getPin() {
-    var username = localStorage["usernameLoginForm"];
+    var username = currentUser.username;
     $.ajax({
         type: "POST",
-        url: "/mail/changepassword?username=" + username,
+        url: "/mail/changepassword/" + username,
         timeout: 600000,
         success: function (data) {
             localStorage.setItem("pin", data);
         }
     });
-    var placeholderForMessage = document.getElementById("placeholderForMessage");
-    placeholderForMessage.setAttribute("class", "bg-success");
-    placeholderForMessage.innerText = "Письмо отправлено к Вам на почту";
 }
 
 function changePassword() {
-    var pin = localStorage["pin"];
-    var newPassword = document.getElementById('newPassword').value;
-    var confirmPassword = document.getElementById('confirmNewPassword').value;
-    var pinField = document.getElementById('pin').value;
-    var result = {"username":localStorage["usernameLoginForm"],
+    let pin = localStorage["pin"];
+    let newPassword = $("#new-password").val();
+    let confirmPassword = $("#new-password-repeat").val();
+    let pinField = $("#pin-input").val();
+    let result = {"username":currentUser.username,
                   "password":newPassword};
     if(pin == pinField) {
-        if(newPassword == confirmPassword) {
-            $.ajax({
-                type:"PUT",
-                contentType:"application/json",
-                url:"/user/changepassword",
-                data:JSON.stringify(result),
-                dataType:"json",
-                timeout:600000,
-                success:function (data) {
-                    var placeholderForMessage = document.getElementById("placeholderForMessage");
-                    placeholderForMessage.setAttribute("class", "bg-info");
-                    placeholderForMessage.innerText = "Ваш новый пароль: " + data.status;
-                }
-            });
+        $.ajax({
+            type:"PUT",
+            contentType:"application/json",
+            url:"/user/changepassword",
+            data:JSON.stringify(result),
+            dataType:"json",
+            timeout:600000,
+            success:function (data) {
+                let p = $(`#needed`);
+                p.css("color", "#000000");
+                p.text("Пароль успешно изменён");
+            }
+        });
         } else {
-            var placeholderForMessage = document.getElementById("placeholderForMessage");
-            placeholderForMessage.setAttribute("class", "bg-info");
-            placeholderForMessage.innerText = "Пароли не совпадают";
+            let p = $(`#needed`);
+            p.css("color", "red");
+            p.text("Проверьте правильность ввода pin-кода");
         }
-    } else {
-        var placeholderForMessage = document.getElementById("placeholderForMessage");
-        placeholderForMessage.setAttribute("class", "bg-danger");
-        placeholderForMessage.innerText = "Неверный пинкод";
-    }
 }

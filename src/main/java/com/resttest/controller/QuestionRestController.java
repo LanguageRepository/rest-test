@@ -25,19 +25,14 @@ public class QuestionRestController {
         return questionService.getQuestion(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void createQuestion(@RequestBody QuestionDto dto) {
-        questionService.createQuestion(dto);
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public QuestionDto createQuestion(@RequestBody QuestionDto dto) {
+        return questionService.createQuestion(dto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public String updateQuestion(@RequestBody QuestionDto dto) {
-        if(!jpaRepository.exists(dto.getId())) {
-            createQuestion(dto);
-        } else {
-            questionService.updateQuestion(dto);
-        }
-        return "ok";
+    @RequestMapping(method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    public QuestionDto updateQuestion(@RequestBody QuestionDto dto) {
+        return questionService.updateQuestion(dto);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")

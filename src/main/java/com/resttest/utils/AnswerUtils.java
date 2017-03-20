@@ -56,12 +56,27 @@ public class AnswerUtils {
         return dtos;
     }
 
+    public List<AnswerDto> convertEntitiesToDtosForPut(List<Answer> entities) {
+        List<AnswerDto> dtos = new ArrayList<>();
+        for (Answer entity : entities) {
+            AnswerDto dto = new AnswerDto();
+            dto.setId(entity.getId());
+            dto.setRightValue(entity.getRightValue());
+            dto.setAnswer(entity.getAnswer());
+            dto.setType(entity.getType().toString());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
     public List<Answer> convertDtosToEntities(List<AnswerDto> dtos) {
         List<Answer> entities = new ArrayList<>();
         for (AnswerDto dto : dtos) {
             Answer answer = new Answer();
-            answer.setId(dto.getId());
-            answer.setQuestion(questionJpaRepository.getOne(dto.getQuestionId()));
+            if(dto.getId() != null) {
+                answer.setId(dto.getId());
+                answer.setQuestion(questionJpaRepository.getOne(dto.getQuestionId()));
+            }
             answer.setAnswer(dto.getAnswer());
             answer.setRightValue(dto.getRightValue());
             if(dtos.size() > 1) {

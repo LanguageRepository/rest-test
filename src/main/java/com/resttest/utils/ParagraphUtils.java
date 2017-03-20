@@ -90,15 +90,19 @@ public class ParagraphUtils {
     }
 
     public ParagraphDtoForTree convertEntityToDtoFroTree(Paragraph entity) {
-        ParagraphDtoForTree dto = new ParagraphDtoForTree();
-        List<ParagraphDtoForTree> childs = new ArrayList<>();
-        for (int i = 0; i < entity.getChilds().size(); i++) {
-            childs.add(paragraphUtils.convertEntityToDtoFroTree(entity.getChilds().get(i)));
+        if(entity != null) {
+            ParagraphDtoForTree dto = new ParagraphDtoForTree();
+            List<ParagraphDtoForTree> childs = new ArrayList<>();
+            for (int i = 0; i < entity.getChilds().size(); i++) {
+                childs.add(paragraphUtils.convertEntityToDtoFroTree(entity.getChilds().get(i)));
+            }
+            dto.setId(entity.getId());
+            dto.setChildren(childs);
+            dto.setText(entity.getName());
+            return dto;
+        } else {
+            return new ParagraphDtoForTree();
         }
-        dto.setId(entity.getId());
-        dto.setChildren(childs);
-        dto.setText(entity.getName());
-        return dto;
     }
 
     public Paragraph convertDtoToEntityForCreateAndUpdate(ParagraphDtoForCreate dto) {

@@ -6,6 +6,7 @@ import com.resttest.model.Test;
 import com.resttest.repository.ParagraphJpaRepository;
 import com.resttest.repository.TestJpaRepository;
 import com.resttest.repository.UserJpaRepository;
+import com.resttest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,9 @@ public class TestUtils {
 
     @Autowired
     private QuestionUtils questionUtils;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserJpaRepository userJpaRepository;

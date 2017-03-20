@@ -34,7 +34,7 @@ const questionValidation = {
 };
 
 $(document).ready(function() {
-    if(location.href.includes("tests")) {
+    if(location.href.includes("teststable")) {
         getAllParagraph();
         getAllTestsForTable();
         $("#questionCreateForm").validate(questionValidation);
@@ -143,7 +143,7 @@ function addAnswer() {
 
 function createButtons(item) {
     return `<div class="btn-group">` +
-           `<a class="btn btn-info btn-fill btn-sm" href="/questions/${item.id}" onclick="saveTestId(${item.id})"><span class="pe-7s-angle-left"></span></a>` +
+           `<a class="btn btn-info btn-fill btn-sm" href="/testservice/questiontable/${item.id}" onclick="saveTestId(${item.id})"><span class="pe-7s-angle-left"></span></a>` +
            `<button class="btn btn-danger btn-fill btn-sm" onclick="deleteTest(${item.id})"><span class="pe-7s-close"></span></button>` +
            `</div>`;
 }
@@ -218,7 +218,7 @@ function createTest() {
     let testName = $("#test-name").val(),
         selectPrg = localStorage.getItem("current_prg_id"),
         testDesc = $("#test-desc").val(),
-        ownerName = "admin";
+        ownerName = username;
     let result = {
         "name"        : testName,
         "ownerName"   : ownerName,

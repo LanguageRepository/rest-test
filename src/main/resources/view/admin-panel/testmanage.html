@@ -5,7 +5,7 @@
 	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Модуль работы с пользователями</title>
+	<title>Модуль работы с заданиями</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -35,7 +35,7 @@
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="green" data-image="../../static/admin-pages/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="azure" data-image="../../static/admin-pages/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
 
@@ -54,7 +54,7 @@
                         <p>Модуль аккаунтов</p>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/userservice/usertable">
                         <i class="pe-7s-users"></i>
                         <p>Модуль пользователей</p>
@@ -72,7 +72,7 @@
                         <p>Модуль мониторинга</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="/taskservice/manage">
                         <i class="pe-7s-refresh-2"></i>
                         <p>Модуль заданий</p>
@@ -134,26 +134,38 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <table width="100%" class="ui celled table" id="usersTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Ф.И.О</th>
-                                            <th>Подразделение</th>
-                                            <th>Роль</th>
-                                            <th>Почтовый адрес</th>
-                                            <th>Опции</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-body">
-                                        <tr>
-                                            <td>Бублик Владислав Алексеевич</td>
-                                            <td>Факультет ТКВТ, кафедра ТКС</td>
-                                            <td>Гость, Студент</td>
-                                            <td><button class="btn btn-info">Редактировать</button></td>
-                                            <td><button class="btn btn-danger">Редактировать</button></td>
-                                    </tr>
-                                </tbody>
+                        <table width="100%" class="ui celled table" id="testAccessTable">
+                            <thead>
+                                <tr>
+                                    <th>Создатель</th>
+                                    <th>Подразделение</th>
+                                    <th>Тест</th>
+                                    <th>Активен от</th>
+                                    <th>Активен до</th>
+                                    <th>Тип теста</th>
+                                    <th>Опции</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Имя Фамилия Отчевство</td>
+                                    <td>Подразделение</td>
+                                    <td>Тест по теме</td>
+                                    <td>До Месяц/День/Время</td>
+                                    <td>До Месяц/День/Время</td>
+                                    <td>Контрольный/Обычный</td>
+                                </tr>
+                            </tbody>
                         </table>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <a href="/taskservice/entity" class="btn btn-info btn-fill pull-right">Создать задание</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,7 +207,7 @@
     <script src="../../static/datatable/datatables-responsive/dataTables.responsive.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.semanticui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js "></script>
-    <script src="../../static/js/users.js"></script>
     <script src="../../static/js/main.js"></script>
+    <script src="../../static/js/test-access.js"></script>
 
 </html>

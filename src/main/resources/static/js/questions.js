@@ -2,10 +2,10 @@ let questions;
 
 let questionIdIteration = 0;
 
-let curId = location.pathname.toString().split(`/`)[2];
+let curId = location.pathname.toString().split(`/`)[3];
 
 $(document).ready(function () {
-    if(location.pathname.toString().split("/")[1] == "questions") {
+    if(location.pathname.toString().split("/")[2] == "questiontable") {
         getAllQuestionsForTable(curId);
         setTestName();
     }
@@ -28,7 +28,7 @@ function getAllQuestionsForTable(id) {
 function setTestName() {
     let a = document.createElement('a');
         a.setAttribute(`class`, `btn btn-info btn-fill pull-right`);
-        a.setAttribute(`href`, `/answers`);
+        a.setAttribute(`href`, `/testservice/answertable`);
         a.innerText = `Добавить вопрос`;
     $.ajax({
         url: "/question/test/name/" + curId,
@@ -71,7 +71,7 @@ function renderQuestionTable(data) {
 
 function createButtons(item) {
     return `<div class="btn-group">` +
-           `<a class="btn btn-info btn-fill btn-sm" href="/answers/${item.id}" onclick=""><span class="pe-7s-angle-left"></span></a>` +
+           `<a class="btn btn-info btn-fill btn-sm" href="/testservice/answertable/${item.id}" onclick=""><span class="pe-7s-angle-left"></span></a>` +
            `<button class="btn btn-danger btn-fill btn-sm" onclick="deleteQuestion(${item.id})"><span class="pe-7s-close"></span></button>` +
            `</div>`;
 }
@@ -93,18 +93,36 @@ function deleteQuestion(id) {
 }
 
 function createQuestion() {
-    $.ajax({
-        url: "/question/",
-        type : "PUT",
-        contentType: "application/json",
-        data: JSON.stringify(buildQuestion()),
-        dataType: 'json',
-        mimeType : "application/json",
-        success : function () {
-        },
-        error : function () {
-            getNewAnswersId();
-        }
-    });
+    if(buildQuestion().id == null) {
+        $.ajax({
+            url: "/question/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(buildQuestion()),
+            dataType: 'json',
+            success: function (data) {
+                location.pathname = "/testservice/answertable/" + data.id;
+            },
+            error: function () {
+                getNewAnswersId();
+                console.log("Неудачная попытка создания вопроса, пожалуйста перезагрузите страницу");
+            }
+        });
+    } else {
+        $.ajax({
+            url: "/question/",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(buildQuestion()),
+            dataType: 'json',
+            success: function (data) {
+                location.pathname = "/testservice/answertable/" + data.id;
+            },
+            error: function () {
+                getNewAnswersId();
+                console.log("Неудачная попытка обновления вопроса, пожалуйста перезагрузите страницу");
+            }
+        });
+    }
 
 }

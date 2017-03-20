@@ -2,8 +2,6 @@
  * Created by kvasa on 08.01.2017.
  */
 
-const username = localStorage.getItem("usernameLoginForm");
-
 const userValidator = {
     rules : {
         form_login : {
@@ -80,6 +78,24 @@ const departmentValidator = {
     }
 };
 
+let currentUser = [];
+
+let userId = window.location.pathname.split(`/`)[2] != null ? window.location.pathname.split(`/`)[2] : "";
+
+
+$(document).ready(function () {
+    getCurrentUser();
+    getUserById();
+    getAllDepartment();
+    getAllDepartmentForSelect();
+    if(location.pathname.split("/")[2] == `usertable`) {
+        getAllUsersForTable();
+    }
+    if(location.pathname.split("/")[2] == null) {
+        validateAllForms();
+    }
+});
+
 function departmentToTree(json) {
     $(function() {
         $('#tree').jstree({
@@ -101,15 +117,10 @@ function departmentToTree(json) {
     })
 }
 
-$(document).ready(function () {
-    $("#current-hello").text(`Здраствуйте, ${username}`);
-    let refId = window.location.pathname.charAt(8);
-    if(window.location.href.endsWith('/cpanel')) {
-        refId = "";
-    }
+function getUserById() {
     $.ajax({
         type : "GET",
-        url  : "/user/" + refId,
+        url  : "/user/" + userId,
         dataType : "json",
         contentType  : "application/json",
         mimeType : "application/json",
@@ -128,24 +139,25 @@ $(document).ready(function () {
             localStorage.setItem("dep_id", data.department_id);
         }
     });
-});
+}
 
-$(document).ready(function getAllDepartment() {
+
+function getAllDepartment() {
     $.ajax({
-        async   : true,
-        type    : "GET",
-        url     : "/department/all",
+        async: true,
+        type: "GET",
+        url: "/department/all",
         dataType: "json",
-        success : function (data) {
+        success: function (data) {
             departmentToTree(JSON.stringify(data));
         },
-        error   : function () {
+        error: function () {
             alert("Не удалось получить данные");
         }
     });
-});
+}
 
-$(document).ready(function () {
+function getAllDepartmentForSelect() {
     $.ajax({
         url: "/department/all/short",
         type: "GET",
@@ -153,25 +165,25 @@ $(document).ready(function () {
         contentType: "application/json",
         mimeType: "application/json",
         success: function (data) {
-            for(let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 console.log(i + data[i].name);
-                if(data[i].type == "unv") {
+                if (data[i].type == "unv") {
                     $("#univ").append(`<option value="${data[i].id}">${data[i].name}</option>`);
-                }else if(data[i].type == "fclt") {
+                } else if (data[i].type == "fclt") {
                     $("#facult").append(`<option value="${data[i].id}">${data[i].name}</option>`);
-                }else if(data[i].type == "caf") {
+                } else if (data[i].type == "caf") {
                     $("#cafedra").append(`<option value="${data[i].id}">${data[i].name}</option>`);
-                }else if(data[i].type == "group") {
-                    $("#group").append( `<option value="${data[i].id}">${data[i].name}</option>`);
-                }else {
-                    $("#other").append( `<option value="${data[i].id}">${data[i].name}</option>`);
+                } else if (data[i].type == "group") {
+                    $("#group").append(`<option value="${data[i].id}">${data[i].name}</option>`);
+                } else {
+                    $("#other").append(`<option value="${data[i].id}">${data[i].name}</option>`);
                 }
             }
         }
     });
-});
+}
 
-$(document).ready(function getAllUsersForTable() {
+function getAllUsersForTable() {
     $.ajax({
         url: "/user/fortable",
         type: "GET",
@@ -182,11 +194,11 @@ $(document).ready(function getAllUsersForTable() {
             $('#usersTable').dataTable({
                 responsive: true,
                 "aoColumnDefs": [
-                    { "sWidth": "93px", "aTargets": [ 4 ] }
+                    {"sWidth": "100 px", "aTargets": [4]}
                 ],
                 "aaData": data.map(item => {
                     var result = [];
-                    result.push("<p id='"+ item.id +"'>" + item.fullName + "</p>");
+                    result.push("<p id='" + item.id + "'>" + item.fullName + "</p>");
                     result.push(item.department);
                     result.push(item.simpleRole);
                     result.push(item.email);
@@ -196,19 +208,26 @@ $(document).ready(function getAllUsersForTable() {
             });
         }
     });
-});
+}
 
-$(document).ready(function () {
+function validateAllForms() {
     $("#user-creation-form").validate(userValidator);
     $("#department_form_creation").validate(departmentValidator);
-});
+}
 
-$(document).ready(function () {
-    $(`.selectpicker`).selectpicker({
-        style : `btn-info`,
-        size  : 4
-    })
-});
+function getCurrentUser() {
+    $.ajax({
+        type: "GET",
+        url: "/user/",
+        dataType: "json",
+        contentType: "application/json",
+        mimeType: "application/json",
+        success: function (data) {
+            currentUser = data;
+        },
+        error: "Error while trying to get user"
+    });
+}
 
 function updateUser() {
     let username = $("#login_form").val(),
@@ -219,7 +238,7 @@ function updateUser() {
         middleName = $("#middlename_form").val(),
         description = $("#description_form").val(),
         department = localStorage.getItem("current_dep_id"),
-        role = $("#role_choose").find("option:selected").text(),
+        role = $("#role_choose").val();
         notify = false;
     if($('#notify').prop('checked')) {
         notify = true;
@@ -227,7 +246,7 @@ function updateUser() {
     let resultJson = {
         "username": username,
         "password": password,
-        "role": role,
+        "simpleRole": role,
         "lastName": lastName,
         "firstName": firstName,
         "middleName": middleName,
@@ -247,7 +266,7 @@ function updateUser() {
                 dataType: 'json',
                 mimeType: "application/json",
                 success: function (data) {
-                    alert("Пользователь" + data.name + " успешно обновлён");
+                    alert("Пользователь " + data.name + " успешно обновлён");
                     console.log(data.name);
                 },
                 error: function () {
@@ -270,6 +289,7 @@ function updateUser() {
             });
         }
     }
+    return resultJson;
 }
 
 function unlockButton() {
@@ -277,10 +297,10 @@ function unlockButton() {
 }
 
 function createButtons(item) {
-    return `<div class="btn-group pull-right" role="group">` +
-        `<a class="btn btn-primary btn-fill" href="/cpanel/${item.id}" role="button">Обновить</a>` +
-        `<button class="btn btn-primary"` +
-        `type="submit" onclick="saveDelete(${item.id})">Удалить</button></div>`;
+    return  `<div class="btn-group">` +
+            `<a class="btn btn-info btn-fill btn-sm" href="/userservice/${item.id}" onclick=""><span class="pe-7s-angle-left"></span></a>` +
+            `<button class="btn btn-danger btn-fill btn-sm" onclick="saveDelete(${item.id})"><span class="pe-7s-close"></span></button>` +
+            `</div>`;
 }
 
 function saveDelete(id) {
@@ -297,7 +317,7 @@ function saveDelete(id) {
 }
 
 function createDepartment() {
-    if($("#department-update").attr("disabled", true)) {
+    if($("#department-update").attr("disabled") != null) {
         updateDepartment();
     } else {
         let department = $("#department-input").val(),
@@ -327,16 +347,16 @@ function updateDepartment() {
     let department = $("#department-input").val(),
         department_choose = $("#parent-select").find(":selected").val(),
         result = {
-            "name"      : department,
-            "parent_id" : department_choose
+            "name": department,
+            "parent_id": department_choose
         };
-    if(!(department == "")) {
+    if (!(department == "")) {
         $.ajax({
-            type : "PUT",
-            contentType : "application/json",
-            url : "/department",
+            type: "PUT",
+            contentType: "application/json",
+            url: "/department",
             data: JSON.stringify(result),
-            success : function () {
+            success: function () {
                 console.log("Подразделение создано");
             }
         })

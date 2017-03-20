@@ -42,14 +42,6 @@ public class TestRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteTest(@PathVariable("id")Long id) {
-        List<QuestionDto> currentQuestion = testService.getTest(id).getQuestions();
-        for (QuestionDto aCurrentQuestion : currentQuestion) {
-            List<AnswerDto> answers = aCurrentQuestion.getAnswers();
-            for (AnswerDto answer : answers) {
-                answerService.deleteAnswer(answer.getId());
-            }
-            questionService.deleteQuestion(aCurrentQuestion.getId());
-        }
         testService.deleteTest(id);
     }
 

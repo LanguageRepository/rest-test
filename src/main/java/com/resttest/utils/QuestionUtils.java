@@ -3,7 +3,7 @@ package com.resttest.utils;
 import com.resttest.dto.question.QuestionDto;
 import com.resttest.dto.question.QuestionDtoForTable;
 import com.resttest.model.Question;
-import com.resttest.model.QuestionEnum;
+import com.resttest.model.QuestionAnswerType;
 import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,16 @@ public class QuestionUtils {
         return dto;
     }
 
+    public QuestionDto convertEntityToDtoForPut(Question entity) {
+        QuestionDto dto = new QuestionDto();
+        dto.setId(entity.getId());
+        dto.setTestId(entity.getTest().getId());
+        dto.setAnswers(answerUtils.convertEntitiesToDtosForPut(entity.getAnswers()));
+        dto.setQuestion(entity.getQuestion());
+        dto.setType(checkTypeToConvertEntityToDto(entity));
+        return dto;
+    }
+
     public Question convertDtoToEntity(QuestionDto dto) {
         Question entity = new Question();
         entity.setId(dto.getId());
@@ -42,9 +52,9 @@ public class QuestionUtils {
         entity.setAnswers(answerUtils.convertDtosToEntities(dto.getAnswers()));
         entity.setTest(testJpaRepository.getOne(dto.getTestId()));
         if(dto.getAnswers().size() > 1) {
-            entity.setType(valueOfRightValues(dto) == 1 ? QuestionEnum.ONE_RIGHT_VALUE : QuestionEnum.MANY_RIGHT_VALUE);
+            entity.setType(valueOfRightValues(dto) == 1 ? QuestionAnswerType.ONE_RIGHT_VALUE : QuestionAnswerType.MANY_RIGHT_VALUE);
         } else {
-            entity.setType(QuestionEnum.MANUAL_INPUT);
+            entity.setType(QuestionAnswerType.MANUAL_INPUT);
         }
         return entity;
     }
@@ -91,9 +101,9 @@ public class QuestionUtils {
 
     private String checkTypeToConvertEntityToDto(Question entity) {
         String type;
-        if(entity.getType().equals(QuestionEnum.MANUAL_INPUT)) {
+        if(entity.getType().equals(QuestionAnswerType.MANUAL_INPUT)) {
             type = "manual_input";
-        } else if(entity.getType().equals(QuestionEnum.MANY_RIGHT_VALUE)) {
+        } else if(entity.getType().equals(QuestionAnswerType.MANY_RIGHT_VALUE)) {
             type = "many_right";
         } else {
             type = "one_right";
@@ -101,7 +111,7 @@ public class QuestionUtils {
         return type;
     }
 
-    private int valueOfRightValues(QuestionDto dto) {
+    public int valueOfRightValues(QuestionDto dto) {
         int temp = 0;
         for (int i = 0; i < dto.getAnswers().size(); i++) {
             if(Objects.equals(dto.getAnswers().get(i).getRightValue(), "true")) {

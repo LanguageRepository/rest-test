@@ -1,6 +1,6 @@
 let answers;
 
-let questionId = location.pathname.toString().split(`/`)[2];
+let questionId = location.pathname.toString().split(`/`)[3];
 
 let answersIds = [];
 
@@ -188,3 +188,4 @@ function buildQuestion() {
     };
     return currentQuestion;
 }
+

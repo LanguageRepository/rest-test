@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<link rel="icon" type="image/png" href="../../static/admin-pages/img/favicon.ico">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Работа с тестами</title>
+	<title>Модуль работы с тестами</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -56,41 +56,47 @@
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="../../static/admin-pages/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="orange" data-image="../../static/admin-pages/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
 
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    REST-TEST
+                <a href="/" class="simple-text">
+                    <img src="../../static/img/logo_admin.png" alt="">
                 </a>
             </div>
 
             <ul class="nav">
                 <li>
-                    <a href="/cpanel">
-                        <i class="pe-7s-user"></i>
-                        <p>Аккаунт</p>
+                    <a href="/userservice">
+                        <i class="pe-7s-id"></i>
+                        <p>Модуль аккаунтов</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/table">
-                        <i class="pe-7s-note2"></i>
-                        <p>Пользователи</p>
+                    <a href="/userservice/usertable">
+                        <i class="pe-7s-users"></i>
+                        <p>Модуль пользователей</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Тесты</p>
+                    <a href="/testservice/teststable">
+                        <i class="pe-7s-note2"></i>
+                        <p>Модуль тестирования</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/icons">
-                        <i class="pe-7s-science"></i>
-                        <p>Доп.Сервис</p>
+                    <a href="/someservice">
+                        <i class="pe-7s-glasses"></i>
+                        <p>Модуль мониторинга</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/taskservice/manage">
+                        <i class="pe-7s-refresh-2"></i>
+                        <p>Модуль заданий</p>
                     </a>
                 </li>
             </ul>
@@ -112,7 +118,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                           <a href="/cpanel">
+                           <a href="/userservice">
                                <p>Аккаунт</p>
                             </a>
                         </li>
@@ -150,7 +156,7 @@
             <div class="container-fluid">
               <div class="row">
                   <div class="col-md-3">
-                    <div class="card">
+                    <div class="card" style="height: 1300px;">
                         <div class="header"><h4 class="title">Список дисциплин</h4></div>
                         <div class="content">
                             <div id="allParagraph"></div>
@@ -250,9 +256,8 @@
 
         <footer class="footer">
             <div class="container-fluid">
-                <button id="testbutton" class="btn btn-success">Тест</button>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">RT</a>, текст копирайта
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://vk.com/vladyslav.bublyk">RT</a>, текст копирайта
                 </p>
             </div>
         </footer>
