@@ -1,10 +1,10 @@
 package com.resttest.utils;
 
 import com.resttest.dto.testaccess.TestAccessDto;
-import com.resttest.dto.testaccess.TestAccessDtoForTable;
+import com.resttest.dto.testaccess.TestAccessDtoForAdminModule;
+import com.resttest.dto.testaccess.TestAccessDtoForMainModule;
 import com.resttest.model.TestAccess;
 import com.resttest.model.User;
-import com.resttest.repository.TestAccessJpaRepository;
 import com.resttest.repository.TestJpaRepository;
 import com.resttest.repository.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 public class TestAccessUtils {
@@ -58,15 +59,20 @@ public class TestAccessUtils {
         entity.setNumberOfAttempts(dto.getNumberOfAttempts());
         entity.setType(dto.getType());
         entity.setTimeToPass(dto.getTimeToPass());
-
+        if(new Date(dateFormat.parse(dto.getInitialTerm()).getTime()).before(new Date()) &&
+                new Date(dateFormat.parse(dto.getDeadline()).getTime()).after(new Date())) {
+            entity.setActive(true);
+        } else {
+            entity.setActive(false);
+        }
         return entity;
     }
 
-    public List<TestAccessDtoForTable> convertEntitiesToDtosForTable(List<TestAccess> entities) throws ParseException {
+    public List<TestAccessDtoForAdminModule> convertEntitiesToDtosForTable(List<TestAccess> entities) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        List<TestAccessDtoForTable> dtos = new ArrayList<>();
+        List<TestAccessDtoForAdminModule> dtos = new ArrayList<>();
         for (TestAccess entity : entities) {
-            TestAccessDtoForTable dto = new TestAccessDtoForTable();
+            TestAccessDtoForAdminModule dto = new TestAccessDtoForAdminModule();
             dto.setId(entity.getId());
             dto.setTestOwner(entity.getTest().getOwner().getUsername());
             dto.setTestName(entity.getTest().getName());
@@ -101,6 +107,27 @@ public class TestAccessUtils {
         } else {
             return true;
         }
+    }
+
+    public List<TestAccessDtoForMainModule> convertEntitiesForDtoMainModule(List<TestAccess> entities) {
+        List<TestAccessDtoForMainModule> dtos = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        for (TestAccess entity : entities) {
+            TestAccessDtoForMainModule dto = new TestAccessDtoForMainModule();
+            User owner = entity.getTest().getOwner();
+            dto.setId(entity.getId());
+            if (entity.getInitialTerm() != null && entity.getDeadline() != null) {
+                dto.setInitialTerm(dateFormat.format(entity.getInitialTerm()));
+                dto.setDeadline(dateFormat.format(entity.getDeadline()));
+            }
+            dto.setNumberOfAttempts(entity.getNumberOfAttempts());
+            dto.setOwnerName(owner.getLastName() + " " + owner.getFirstName() + " " + owner.getMiddleName());
+            dto.setTestName(entity.getTest().getName());
+            dto.setType(entity.getType());
+            dto.setActive(entity.getActive());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
 }

@@ -61,7 +61,7 @@ public class QuestionService {
         Question currentQuestion = jpaRepository.getOne(dto.getId());
         currentQuestion.setQuestion(dto.getQuestion());
         currentQuestion.setTest(testJpaRepository.getOne(dto.getTestId()));
-        if(dto.getAnswers().size() > 1) {
+        if(dto.getAnswers().size() >= 1) {
             currentQuestion.setType(questionUtils.valueOfRightValues(dto) == 1 ?
                     QuestionAnswerType.ONE_RIGHT_VALUE : QuestionAnswerType.MANY_RIGHT_VALUE);
         } else {
@@ -75,24 +75,11 @@ public class QuestionService {
     }
 
     private void updateAnswers(Question entity, QuestionDto dto) {
-        List<Long> answerIdentifiers = new ArrayList<>();
-        List<Long> answerDtoIdentifies = new ArrayList<>();
-        for (int i = 0; i < entity.getAnswers().size(); i++) {
-            answerIdentifiers.add(entity.getAnswers().get(i).getId());
-        }
-        for (int i = 0; i < dto.getAnswers().size(); i++) {
-            if(dto.getAnswers().get(i).getId() != null) {
-                answerDtoIdentifies.add(dto.getAnswers().get(i).getId());
-            }
-        }
-        answerIdentifiers.removeAll(answerDtoIdentifies);
-        for (int i = 0; i < answerIdentifiers.size(); i++) {
-            answerJpaRepository.delete(answerIdentifiers.get(i));
-        }
-        // update changed questions
-        for (int i = 0; i < dto.getAnswers().size(); i++) {
-            answerJpaRepository.save(answerUtils.convertDtoToEntity(dto.getAnswers().get(i)));
-        }
+        Set<Answer> entities = new HashSet<>(entity.getAnswers());
+        Set<AnswerDto> dtos = new HashSet<>(dto.getAnswers());
+        entities.removeAll(answerUtils.convertDtosToEntities(new ArrayList<>(dtos)));
+        entities.forEach(s -> answerJpaRepository.delete(s.getId()));
+        dto.getAnswers().forEach(s -> answerJpaRepository.save(answerUtils.convertDtoToEntity(s)));
     }
 
     @Transactional

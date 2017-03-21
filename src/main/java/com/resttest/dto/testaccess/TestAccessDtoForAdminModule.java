@@ -2,7 +2,7 @@ package com.resttest.dto.testaccess;
 
 import java.util.Set;
 
-public class TestAccessDtoForTable {
+public class TestAccessDtoForAdminModule {
 
     private Long id;
 

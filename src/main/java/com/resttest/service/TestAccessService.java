@@ -1,7 +1,8 @@
 package com.resttest.service;
 
 import com.resttest.dto.testaccess.TestAccessDto;
-import com.resttest.dto.testaccess.TestAccessDtoForTable;
+import com.resttest.dto.testaccess.TestAccessDtoForAdminModule;
+import com.resttest.dto.testaccess.TestAccessDtoForMainModule;
 import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.TestAccess;
 import com.resttest.repository.TestAccessJpaRepository;
@@ -51,7 +52,7 @@ public class TestAccessService {
     }
 
     @Transactional
-    public List<TestAccessDtoForTable> getAllTestAccessesForTable() throws ParseException {
+    public List<TestAccessDtoForAdminModule> getAllTestAccessesForTable() throws ParseException {
         return utils.convertEntitiesToDtosForTable(jpaRepository.findAll());
     }
 
@@ -79,7 +80,7 @@ public class TestAccessService {
         return dates;
     }
 
-    public List<TestAccessDtoForTable> getEntitiesForMainModule() throws ParseException {
+    public List<TestAccessDtoForMainModule> getEntitiesForMainModule() throws ParseException {
         Long currentUserId = userService.getCurrentAuthenticatedUser().getId();
         List<TestAccess> allTestAccess = jpaRepository.findAll();
         List<TestAccess> testAccessesForCurrentUser = new ArrayList<>();
@@ -90,7 +91,7 @@ public class TestAccessService {
                 }
             }
         }
-        return utils.convertEntitiesToDtosForTable(testAccessesForCurrentUser);
+        return utils.convertEntitiesForDtoMainModule(testAccessesForCurrentUser);
     }
 
 }

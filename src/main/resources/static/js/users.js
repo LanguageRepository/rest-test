@@ -237,7 +237,7 @@ function updateUser() {
         lastName = $("#lastname_form").val(),
         middleName = $("#middlename_form").val(),
         description = $("#description_form").val(),
-        department = localStorage.getItem("current_dep_id"),
+        department = parseInt(localStorage.getItem("current_dep_id")),
         role = $("#role_choose").val();
         notify = false;
     if($('#notify').prop('checked')) {

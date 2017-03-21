@@ -25,7 +25,7 @@ function findAllTestAccess() {
 }
 
 function renderTaskTable() {
-    $("#testAccessTable").DataTable({
+    $("#usersTable").DataTable({
         responsive : true,
         "aoColumnDefs": [
             { "sWidth": "80px", "aTargets": [ 6 ] }

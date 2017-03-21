@@ -1,7 +1,8 @@
 package com.resttest.controller;
 
 import com.resttest.dto.testaccess.TestAccessDto;
-import com.resttest.dto.testaccess.TestAccessDtoForTable;
+import com.resttest.dto.testaccess.TestAccessDtoForAdminModule;
+import com.resttest.dto.testaccess.TestAccessDtoForMainModule;
 import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.service.TestAccessService;
 import com.resttest.service.UserService;
@@ -33,7 +34,7 @@ public class TestAccessRestController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
-    public List<TestAccessDtoForTable> getAllTestAccessesForTable() throws ParseException {
+    public List<TestAccessDtoForAdminModule> getAllTestAccessesForTable() throws ParseException {
         return service.getAllTestAccessesForTable();
     }
 
@@ -48,7 +49,7 @@ public class TestAccessRestController {
     }
 
     @RequestMapping(value = "/currentuser", method = RequestMethod.GET, produces = "application/json")
-    public List<TestAccessDtoForTable> getTestAccessesForCurrentUser() throws ParseException {
+    public List<TestAccessDtoForMainModule> getTestAccessesForCurrentUser() throws ParseException {
         return service.getEntitiesForMainModule();
     }
 
