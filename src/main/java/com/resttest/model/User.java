@@ -28,6 +28,7 @@ public class User implements Serializable{
 	private RoleEnum role;
 	private String simpleRole;
 	private Boolean isDeleted = false;
+	private List<TestAccess> testAccess;
 
 	public User() {
 	}
@@ -167,5 +168,63 @@ public class User implements Serializable{
 
 	public void setSimpleRole(String simpleRole) {
 		this.simpleRole = simpleRole;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "test_access_users",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "test_access_id"))
+	public List<TestAccess> getTestAccess() {
+		return testAccess;
+	}
+
+	public void setTestAccess(List<TestAccess> testAccess) {
+		this.testAccess = testAccess;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (id != null ? !id.equals(user.id) : user.id != null) return false;
+		if (username != null ? !username.equals(user.username) : user.username != null) return false;
+		if (password != null ? !password.equals(user.password) : user.password != null) return false;
+		if (enabled != null ? !enabled.equals(user.enabled) : user.enabled != null) return false;
+		if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+		if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+		if (middleName != null ? !middleName.equals(user.middleName) : user.middleName != null) return false;
+		if (department != null ? !department.equals(user.department) : user.department != null) return false;
+		if (email != null ? !email.equals(user.email) : user.email != null) return false;
+		if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
+		if (description != null ? !description.equals(user.description) : user.description != null) return false;
+		if (testResults != null ? !testResults.equals(user.testResults) : user.testResults != null) return false;
+		if (role != user.role) return false;
+		if (simpleRole != null ? !simpleRole.equals(user.simpleRole) : user.simpleRole != null) return false;
+		if (isDeleted != null ? !isDeleted.equals(user.isDeleted) : user.isDeleted != null) return false;
+		return testAccess != null ? testAccess.equals(user.testAccess) : user.testAccess == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (username != null ? username.hashCode() : 0);
+		result = 31 * result + (password != null ? password.hashCode() : 0);
+		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
+		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+		result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+		result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+		result = 31 * result + (department != null ? department.hashCode() : 0);
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (phone != null ? phone.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (testResults != null ? testResults.hashCode() : 0);
+		result = 31 * result + (role != null ? role.hashCode() : 0);
+		result = 31 * result + (simpleRole != null ? simpleRole.hashCode() : 0);
+		result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+		result = 31 * result + (testAccess != null ? testAccess.hashCode() : 0);
+		return result;
 	}
 }

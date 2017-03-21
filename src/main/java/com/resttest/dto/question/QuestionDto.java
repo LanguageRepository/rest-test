@@ -1,4 +1,6 @@
-package com.resttest.dto;
+package com.resttest.dto.question;
+
+import com.resttest.dto.AnswerDto;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class QuestionDto {
     private String question;
     private List<AnswerDto> answers;
     private Long testId;
+    private String type;
 
     public Long getId() {
         return id;
@@ -42,6 +45,14 @@ public class QuestionDto {
 
     public void setTestId(Long testId) {
         this.testId = testId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 

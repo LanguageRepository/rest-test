@@ -1,6 +1,6 @@
 package com.resttest.service;
 
-import com.resttest.dto.ShortView;
+import com.resttest.dto.user.UserDto;
 import com.resttest.model.MailTemplate;
 import com.resttest.model.User;
 import com.resttest.repository.UserJpaRepository;
@@ -22,6 +22,9 @@ public class PasswordChange {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     public String generatePin() {
         Random random = new Random();
@@ -38,6 +41,7 @@ public class PasswordChange {
         String pin = generatePin();
         MailTemplate mailTemplate = new MailTemplate(user.getEmail(), "Восстановление пароля", "PIN-код для восстановления пароля: " + pin);
         mailService.sendMail(mailTemplate);
+        UserDto dto = new UserDto();
         return pin;
     }
 

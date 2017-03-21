@@ -1,7 +1,5 @@
 package com.resttest.dto;
 
-import com.resttest.model.AnswerType;
-
 /**
  * Created by kvasa on 01.01.2017.
  */
@@ -10,7 +8,7 @@ public class AnswerDto {
     private Long id;
     private String answer;
     private Long questionId;
-    private AnswerType type;
+    private String type;
     private String rightValue;
 
     public Long getId() {
@@ -37,11 +35,11 @@ public class AnswerDto {
         this.questionId = questionId;
     }
 
-    public AnswerType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(AnswerType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

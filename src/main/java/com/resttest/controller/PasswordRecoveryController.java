@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(value = "/mail")
-public class MailRestController {
+public class PasswordRecoveryController {
 
     @Autowired
     private MailService mailService;
@@ -24,8 +24,8 @@ public class MailRestController {
         mailService.sendMail(mailTemplate);
     }
 
-    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-    public String requestToPasswordRecovery(@RequestParam String username) {
+    @RequestMapping(value = "/changepassword/{username}", method = RequestMethod.POST)
+    public String requestToPasswordRecovery(@PathVariable String username) {
         return passwordChange.requestToSendPin(username);
     }
 

@@ -5,3 +5,7 @@ label.error {
     color: #ff0000;
     font-weight: normal;
 }
+
+.CodeMirror, .CodeMirror-scroll {
+    min-height: 200px;
+}

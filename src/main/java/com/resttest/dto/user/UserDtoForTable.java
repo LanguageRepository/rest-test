@@ -10,6 +10,7 @@ public class UserDtoForTable {
     private String department;
     private String simpleRole;
     private String email;
+    private Boolean accessByCurrentTest = false;
 
     public Long getId() {
         return id;
@@ -49,5 +50,13 @@ public class UserDtoForTable {
 
     public void setSimpleRole(String simpleRole) {
         this.simpleRole = simpleRole;
+    }
+
+    public Boolean getAccessByCurrentTest() {
+        return accessByCurrentTest;
+    }
+
+    public void setAccessByCurrentTest(Boolean accessByCurrentTest) {
+        this.accessByCurrentTest = accessByCurrentTest;
     }
 }

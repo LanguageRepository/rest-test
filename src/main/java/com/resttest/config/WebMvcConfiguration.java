@@ -29,15 +29,18 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/").setViewName("index");
-        registry.addViewController("/tasks").setViewName("tasks");
-        registry.addViewController("/cpanel/**").setViewName("/admin-panel/user");
-        registry.addViewController("/changeuser/**").setViewName("user");
-        registry.addViewController("/profile").setViewName("profile");
+        registry.addViewController("/").setViewName("/main-panel/index");
+        registry.addViewController("/taskservice").setViewName("/main-panel/task");
+        registry.addViewController("/userservice/**").setViewName("/admin-panel/user");
+        registry.addViewController("/userservice/changeuser/**").setViewName("/admin-panel/user");
+        registry.addViewController("/userservice/profile").setViewName("/main-panel/account");
         registry.addViewController("/403").setViewName("403");
-        registry.addViewController("/tests/**").setViewName("/admin-panel/tests");
-        registry.addViewController("/table").setViewName("/admin-panel/table");
-        registry.addViewController("/someservice").setViewName("/admin-panel/icons");
+        registry.addViewController("/testservice/teststable/**").setViewName("/admin-panel/tests");
+        registry.addViewController("/testservice/questiontable/**").setViewName("/admin-panel/questions");
+        registry.addViewController("/testservice/answertable/**").setViewName("/admin-panel/question");
+        registry.addViewController("/userservice/usertable").setViewName("/admin-panel/table");
+        registry.addViewController("/taskservice/manage").setViewName("/admin-panel/testmanage");
+        registry.addViewController("/taskservice/entity/**").setViewName("/admin-panel/taskmanage");
     }
 
     @Override
@@ -77,5 +80,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new CurrentUserDetailsService();
     }
+
+
 
 }

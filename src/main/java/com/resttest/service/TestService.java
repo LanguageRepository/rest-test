@@ -2,6 +2,9 @@ package com.resttest.service;
 
 import com.resttest.dto.test.TestDto;
 import com.resttest.dto.test.TestDtoForTable;
+import com.resttest.model.Question;
+import com.resttest.repository.AnswerJpaRepository;
+import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
 import com.resttest.utils.TestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,12 @@ public class TestService {
     @Autowired
     private TestJpaRepository testJpaRepository;
 
+    @Autowired
+    private AnswerJpaRepository answerJpaRepository;
+
+    @Autowired
+    private QuestionJpaRepository questionJpaRepository;
+
     @Transactional
     public TestDto getTest(Long id) {
         return testUtils.convertEntityToDto(testJpaRepository.getOne(id));
@@ -37,12 +46,24 @@ public class TestService {
 
     @Transactional
     public void deleteTest(Long id) {
+        List<Question> questions = testJpaRepository.getOne(id).getQuestions();
+        for (int i = 0; i < questions.size(); i++) {
+            for (int j = 0; j < questions.get(i).getAnswers().size(); j++) {
+                answerJpaRepository.delete(questions.get(i).getAnswers().get(j).getId());
+            }
+            questionJpaRepository.delete(questions.get(i).getId());
+        }
         testJpaRepository.delete(id);
     }
 
     @Transactional
     public List<TestDtoForTable> getAllTestsForTable() {
         return testUtils.convertEntitiesToDtosForTable(testJpaRepository.findAll());
+    }
+
+    @Transactional
+    public List<TestDtoForTable> getTestsByParagraph(Long id) {
+        return testUtils.convertEntitiesToDtosForTable(testJpaRepository.findTestsByParagraphId(id));
     }
 
 }

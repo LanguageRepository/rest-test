@@ -2,9 +2,11 @@ package com.resttest.utils;
 
 import com.resttest.dto.paragraph.ParagraphDto;
 import com.resttest.dto.ShortView;
+import com.resttest.dto.paragraph.ParagraphDtoForCreate;
 import com.resttest.dto.paragraph.ParagraphDtoForTree;
 import com.resttest.model.Paragraph;
 import com.resttest.model.Test;
+import com.resttest.repository.ParagraphJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,9 @@ public class ParagraphUtils {
 
     @Autowired
     private ParagraphUtils paragraphUtils;
+
+    @Autowired
+    private ParagraphJpaRepository jpaRepository;
 
     public ParagraphDto convertEntityToDto(Paragraph entity) {
         ParagraphDto dto = new ParagraphDto();
@@ -85,15 +90,32 @@ public class ParagraphUtils {
     }
 
     public ParagraphDtoForTree convertEntityToDtoFroTree(Paragraph entity) {
-        ParagraphDtoForTree dto = new ParagraphDtoForTree();
-        List<ParagraphDtoForTree> childs = new ArrayList<>();
-        for (int i = 0; i < entity.getChilds().size(); i++) {
-            childs.add(paragraphUtils.convertEntityToDtoFroTree(entity.getChilds().get(i)));
+        if(entity != null) {
+            ParagraphDtoForTree dto = new ParagraphDtoForTree();
+            List<ParagraphDtoForTree> childs = new ArrayList<>();
+            for (int i = 0; i < entity.getChilds().size(); i++) {
+                childs.add(paragraphUtils.convertEntityToDtoFroTree(entity.getChilds().get(i)));
+            }
+            dto.setId(entity.getId());
+            dto.setChildren(childs);
+            dto.setText(entity.getName());
+            return dto;
+        } else {
+            return new ParagraphDtoForTree();
         }
-        dto.setId(entity.getId());
-        dto.setChildren(childs);
-        dto.setText(entity.getName());
-        return dto;
+    }
+
+    public Paragraph convertDtoToEntityForCreateAndUpdate(ParagraphDtoForCreate dto) {
+        Paragraph entity;
+        if(dto.getId() != null) {
+            entity = jpaRepository.getOne(dto.getId());
+            entity.setName(dto.getName());
+        } else {
+            entity = new Paragraph();
+            entity.setName(dto.getName());
+            entity.setParent(jpaRepository.getOne(dto.getParentId()));
+        }
+        return entity;
     }
 
 }

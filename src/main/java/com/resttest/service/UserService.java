@@ -97,7 +97,7 @@ public class UserService {
     public void changePassword(UserDto dto) {
         User user = userJpaRepository.getUserByUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
-        userJpaRepository.saveAndFlush(user);
+        userJpaRepository.save(user);
     }
 
     @Transactional
