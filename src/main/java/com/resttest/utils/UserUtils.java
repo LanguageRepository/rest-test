@@ -49,18 +49,20 @@ public class UserUtils {
 
     public User convertDtoToEntityForPut(UserDto dto) {
         User entity = new User();
-        Long id = userJpaRepository.getUserByUsername(dto.getUsername()).getId();
-        entity.setId(id);
-        entity.setUsername(dto.getUsername());
-        entity.setPassword(dto.getPassword());
-        entity.setRole(convertSimpleRoleToRoleEnum(dto.getSimpleRole()));
-        entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
-        entity.setPhone(dto.getPhone());
-        entity.setDescription(dto.getDescription());
-        entity.setFirstName(dto.getFirstName());
-        entity.setMiddleName(dto.getMiddleName());
-        entity.setLastName(dto.getLastName());
-        entity.setEmail(dto.getEmail());
+        if(dto.getUsername() != null) {
+            Long id = userJpaRepository.getUserByUsername(dto.getUsername()).getId();
+            entity.setId(id);
+            entity.setUsername(dto.getUsername());
+            entity.setPassword(dto.getPassword());
+            entity.setRole(convertSimpleRoleToRoleEnum(dto.getSimpleRole()));
+            entity.setDepartment(departmentJpaRepository.getOne(dto.getDepartment_id()));
+            entity.setPhone(dto.getPhone());
+            entity.setDescription(dto.getDescription());
+            entity.setFirstName(dto.getFirstName());
+            entity.setMiddleName(dto.getMiddleName());
+            entity.setLastName(dto.getLastName());
+            entity.setEmail(dto.getEmail());
+        }
         return entity;
     }
 
