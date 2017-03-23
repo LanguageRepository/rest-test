@@ -6,6 +6,10 @@ import com.resttest.model.Question;
 import com.resttest.model.QuestionAnswerType;
 import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
+import org.commonmark.node.Node;
+import org.commonmark.node.Visitor;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -119,6 +123,23 @@ public class QuestionUtils {
             }
         }
         return temp;
+    }
+
+    public List<QuestionDto> convertEntitiesToDtosWithMarkdownPreprocessor(List<Question> entities) {
+        List<QuestionDto> dtos = new ArrayList<>();
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        entities.forEach(s -> {
+            Node node = parser.parse(s.getQuestion());
+            QuestionDto dto = new QuestionDto();
+            dto.setId(s.getId());
+            dto.setType(s.getType().toString());
+            dto.setTestId(s.getTest().getId());
+            dto.setAnswers(answerUtils.convertEntitiesToDtosWithMarkdownPreprocessor(s.getAnswers()));
+            dto.setQuestion(renderer.render(node));
+            dtos.add(dto);
+        });
+        return dtos;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.resttest.service;
 
-import com.resttest.dto.AnswerDto;
+import com.resttest.dto.answer.AnswerDto;
 import com.resttest.dto.ShortView;
 import com.resttest.dto.question.QuestionDto;
 import com.resttest.dto.question.QuestionDtoForTable;

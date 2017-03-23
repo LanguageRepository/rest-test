@@ -1,6 +1,6 @@
 package com.resttest.dto.question;
 
-import com.resttest.dto.AnswerDto;
+import com.resttest.dto.answer.AnswerDto;
 
 import java.util.List;
 

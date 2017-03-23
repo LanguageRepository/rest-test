@@ -79,4 +79,13 @@ public class TestUtils {
         return dto;
     }
 
+    public TestDto convertEntityToDtoWithMarkdownPreprocessor(Test entity) {
+        TestDto dto = new TestDto();
+        dto.setId(entity.getId());
+        dto.setDescription(entity.getDescription());
+        dto.setName(entity.getName());
+        dto.setQuestions(questionUtils.convertEntitiesToDtosWithMarkdownPreprocessor(entity.getQuestions()));
+        return dto;
+    }
+
 }

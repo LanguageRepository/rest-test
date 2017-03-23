@@ -3,6 +3,7 @@ package com.resttest.service;
 import com.resttest.dto.test.TestDto;
 import com.resttest.dto.test.TestDtoForTable;
 import com.resttest.model.Question;
+import com.resttest.model.Test;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
@@ -64,6 +65,12 @@ public class TestService {
     @Transactional
     public List<TestDtoForTable> getTestsByParagraph(Long id) {
         return testUtils.convertEntitiesToDtosForTable(testJpaRepository.findTestsByParagraphId(id));
+    }
+
+    @Transactional
+    public TestDto getTestForThePass(Long id) {
+        Test entity = testJpaRepository.getOne(id);
+        return testUtils.convertEntityToDtoWithMarkdownPreprocessor(entity);
     }
 
 }

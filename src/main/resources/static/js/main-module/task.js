@@ -11,7 +11,7 @@ function findTasks() {
         dataType: "json",
         contentType: "application/json",
         mimeType: "application/json",
-        success : function (data) {
+        success: function (data) {
             tasks = data;
             renderTaskTable();
         }
@@ -20,9 +20,9 @@ function findTasks() {
 
 function renderTaskTable() {
     $("#task-table").DataTable({
-        responsive : true,
+        responsive: true,
 
-        "aaData" : tasks.map(item => {
+        "aaData": tasks.map(item => {
             let result = [];
             result.push(item.testName);
             result.push(item.ownerName);
@@ -38,4 +38,15 @@ function renderTaskTable() {
 function renderButton() {
     return [`<button type="button" disabled class="btn btn-danger">Приступить</button>`,
             `<button type="button" class="btn btn-info">Приступить</button>`];
+}
+
+function findChoosenValue() {
+    let values = $('input:checked');
+    let choosenValues = [];
+    choosenValues.push({
+        answerId: function() {return 0;},
+        questionId: $('.card-title')[0].id
+    }); 
+
+    return choosenValues;
 }

@@ -1,6 +1,6 @@
 package com.resttest.controller;
 
-import com.resttest.dto.AnswerDto;
+import com.resttest.dto.answer.AnswerDto;
 import com.resttest.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

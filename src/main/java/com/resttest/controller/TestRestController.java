@@ -1,9 +1,8 @@
 package com.resttest.controller;
 
-import com.resttest.dto.AnswerDto;
-import com.resttest.dto.question.QuestionDto;
 import com.resttest.dto.test.TestDto;
 import com.resttest.dto.test.TestDtoForTable;
+import com.resttest.model.Test;
 import com.resttest.service.AnswerService;
 import com.resttest.service.QuestionService;
 import com.resttest.service.TestService;
@@ -53,6 +52,11 @@ public class TestRestController {
     @RequestMapping(value = "/table/{id}", method = RequestMethod.GET, produces = "application/json")
     public List<TestDtoForTable> getTestsByParagraph(@PathVariable("id") Long id) {
         return testService.getTestsByParagraph(id);
+    }
+
+    @RequestMapping(value = "/{id}/processed", method = RequestMethod.GET, produces = "application/json")
+    public TestDto getTestForThePass(@PathVariable Long id) {
+        return testService.getTestForThePass(id);
     }
 
 }

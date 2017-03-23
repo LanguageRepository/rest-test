@@ -1,11 +1,14 @@
 package com.resttest.utils;
 
-import com.resttest.dto.AnswerDto;
+import com.resttest.dto.answer.AnswerDto;
 import com.resttest.dto.ShortView;
 import com.resttest.model.Answer;
 import com.resttest.model.AnswerType;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.repository.QuestionJpaRepository;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -104,6 +107,23 @@ public class AnswerUtils {
             type = AnswerType.ANSWER_TYPE_STRING;
         }
         return type;
+    }
+
+    public List<AnswerDto> convertEntitiesToDtosWithMarkdownPreprocessor(List<Answer> entities) {
+        List<AnswerDto> dtos = new ArrayList<>();
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        entities.forEach(s -> {
+            AnswerDto dto = new AnswerDto();
+            Node node = parser.parse(s.getAnswer());
+            dto.setId(s.getId());
+            dto.setQuestionId(s.getQuestion().getId());
+            dto.setType(s.getType().toString());
+            dto.setRightValue(s.getRightValue());
+            dto.setAnswer(renderer.render(node));
+            dtos.add(dto);
+        });
+        return dtos;
     }
 
 }

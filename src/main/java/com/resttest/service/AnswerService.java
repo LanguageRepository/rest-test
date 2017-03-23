@@ -1,6 +1,6 @@
 package com.resttest.service;
 
-import com.resttest.dto.AnswerDto;
+import com.resttest.dto.answer.AnswerDto;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.utils.AnswerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
