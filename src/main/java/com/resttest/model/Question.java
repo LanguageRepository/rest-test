@@ -10,6 +10,7 @@ public class Question {
 	private Test test;
 	private List<Answer> answers;
 	private QuestionAnswerType type;
+	private List<TestPassage> testPassages;
 
 	public Question() {
 		
@@ -60,6 +61,18 @@ public class Question {
 
 	public void setType(QuestionAnswerType type) {
 		this.type = type;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "test_passage_questions",
+				joinColumns = @JoinColumn(name = "question_id"),
+				inverseJoinColumns = @JoinColumn(name = "test_passage_id"))
+	public List<TestPassage> getTestPassages() {
+		return testPassages;
+	}
+
+	public void setTestPassages(List<TestPassage> testPassages) {
+		this.testPassages = testPassages;
 	}
 
 	@Override
