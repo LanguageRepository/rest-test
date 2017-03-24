@@ -2,6 +2,7 @@ package com.resttest.service;
 
 import com.resttest.dto.test.TestDto;
 import com.resttest.dto.test.TestDtoForTable;
+import com.resttest.model.Answer;
 import com.resttest.model.Question;
 import com.resttest.model.Test;
 import com.resttest.repository.AnswerJpaRepository;
@@ -47,12 +48,10 @@ public class TestService {
 
     @Transactional
     public void deleteTest(Long id) {
-        List<Question> questions = testJpaRepository.getOne(id).getQuestions();
+        List<Question> questions = questionJpaRepository.findQuestionByTestId(id);
         for (int i = 0; i < questions.size(); i++) {
-            for (int j = 0; j < questions.get(i).getAnswers().size(); j++) {
-                answerJpaRepository.delete(questions.get(i).getAnswers().get(j).getId());
-            }
-            questionJpaRepository.delete(questions.get(i).getId());
+            deleteAnswers(questions.get(i).getAnswers());
+            questionJpaRepository.delete(questions.get(i));
         }
         testJpaRepository.delete(id);
     }
@@ -71,6 +70,10 @@ public class TestService {
     public TestDto getTestForThePass(Long id) {
         Test entity = testJpaRepository.getOne(id);
         return testUtils.convertEntityToDtoWithMarkdownPreprocessor(entity);
+    }
+
+    private void deleteAnswers(List<Answer> entities) {
+        entities.forEach(s -> answerJpaRepository.delete(s.getId()));
     }
 
 }

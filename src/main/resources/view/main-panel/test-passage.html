@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../../static/b4/css/bootstrap.min.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <link href="../../static/icheck/skins/square/blue.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>Система тестирования Rest-Test</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">REST-TEST</a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/taskservice">Задания</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Отчёты</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Панель управления
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/userservice/usertable">Управление пользователями</a>
+                        <a class="dropdown-item" href="/userservice">Управление аккаунтом</a>
+                        <a class="dropdown-item" href="/testservice/teststable">Управление тестами</a>
+                        <a href="/taskservice/" class="dropdown-item">Управление заданиями</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="/userservice/profile" class="nav-link">Профиль</a>
+            </li>
+            <a href="/logout" class="btn btn-outline-info my-2 my-sm-0">Выйти</a>
+        </ul>
+    </nav>
+    <div class="content"><br>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <!--Starting content block-->
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title" id="q1">Для чего люди исспользуют свет?</h4><br>
+                        <p class="card-text">
+                            <label><input type="checkbox" id="q1a1" name="q1a"> Ответ 1</label><br>
+                            <label><input type="checkbox" id="q1a2" name="q1a"> Ответ 2</label><br>
+                            <label><input type="checkbox" id="q1a3" name="q1a"> Ответ 3</label><br>
+                            <label><input type="checkbox" id="q1a4" name="q1a"> Ответ 4</label><br>
+                        </p>
+                        <a href="">Назад</a>
+                        <a href="" class="float-right">Вперёд</a>
+                    </div>
+                </div>
+            </div>
+            <!--Finished content block-->
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+    <script src="../../static/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="../../static/b4/js/bootstrap.min.js"></script>
+    <script src="../../static/icheck/icheck.min.js"></script>
+    <script src="../../static/js/main-module/icheck-init.js"></script>
+    <script src="../../static/js/main-module/task.js"></script>
+</body>
+
+</html>

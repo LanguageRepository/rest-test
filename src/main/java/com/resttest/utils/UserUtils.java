@@ -2,6 +2,7 @@ package com.resttest.utils;
 
 import com.resttest.dto.ShortView;
 import com.resttest.dto.user.UserDto;
+import com.resttest.dto.user.UserDtoForMainModule;
 import com.resttest.dto.user.UserDtoForTable;
 import com.resttest.model.RoleEnum;
 import com.resttest.model.User;
@@ -142,6 +143,15 @@ public class UserUtils {
             }
         }
         return dtos;
+    }
+
+    public UserDtoForMainModule convertEntityToDtoForMainModule(User user) {
+        UserDtoForMainModule dto = new UserDtoForMainModule();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole().toString());
+        dto.setUsername(user.getUsername());
+        return dto;
     }
 
     private RoleEnum convertSimpleRoleToRoleEnum(String simpleRole) {

@@ -2,6 +2,7 @@ package com.resttest.utils;
 
 import com.resttest.dto.answer.AnswerDto;
 import com.resttest.dto.ShortView;
+import com.resttest.dto.answer.AnswerDtoForMainModule;
 import com.resttest.model.Answer;
 import com.resttest.model.AnswerType;
 import com.resttest.repository.AnswerJpaRepository;
@@ -120,6 +121,21 @@ public class AnswerUtils {
             dto.setQuestionId(s.getQuestion().getId());
             dto.setType(s.getType().toString());
             dto.setRightValue(s.getRightValue());
+            dto.setAnswer(renderer.render(node));
+            dtos.add(dto);
+        });
+        return dtos;
+    }
+
+    public List<AnswerDtoForMainModule> convertEntitiesToDtosForMainModule(List<Answer> entities) {
+        List<AnswerDtoForMainModule> dtos = new ArrayList<>();
+        final Long[] i = {0l};
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        entities.forEach(s -> {
+            AnswerDtoForMainModule dto = new AnswerDtoForMainModule();
+            Node node = parser.parse(s.getAnswer());
+            dto.setId(i[0]++);
             dto.setAnswer(renderer.render(node));
             dtos.add(dto);
         });

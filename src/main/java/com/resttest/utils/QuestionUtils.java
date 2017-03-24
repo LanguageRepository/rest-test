@@ -1,6 +1,7 @@
 package com.resttest.utils;
 
 import com.resttest.dto.question.QuestionDto;
+import com.resttest.dto.question.QuestionDtoForMainModule;
 import com.resttest.dto.question.QuestionDtoForTable;
 import com.resttest.model.Question;
 import com.resttest.model.QuestionAnswerType;
@@ -137,6 +138,23 @@ public class QuestionUtils {
             dto.setTestId(s.getTest().getId());
             dto.setAnswers(answerUtils.convertEntitiesToDtosWithMarkdownPreprocessor(s.getAnswers()));
             dto.setQuestion(renderer.render(node));
+            dtos.add(dto);
+        });
+        return dtos;
+    }
+
+    public List<QuestionDtoForMainModule> convertEntitiesToDtosForMainModule(List<Question> entities) {
+        List<QuestionDtoForMainModule> dtos = new ArrayList<>();
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        final Long[] i = {0l};
+        entities.forEach(s -> {
+            QuestionDtoForMainModule dto = new QuestionDtoForMainModule();
+            Node node = parser.parse(s.getQuestion());
+            dto.setId(i[0]++);
+            dto.setAnswerDtos(answerUtils.convertEntitiesToDtosForMainModule(s.getAnswers()));
+            dto.setQuestion(renderer.render(node));
+            dto.setType(s.getType().toString());
             dtos.add(dto);
         });
         return dtos;

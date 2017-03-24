@@ -10,6 +10,7 @@ import com.resttest.model.QuestionAnswerType;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
+import com.resttest.repository.TestPassageJpaRepository;
 import com.resttest.utils.AnswerUtils;
 import com.resttest.utils.QuestionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class QuestionService {
 
     @Autowired
     private AnswerUtils answerUtils;
+
+    @Autowired
+    private TestPassageJpaRepository testPassageJpaRepository;
+
+    @Autowired
+    private AnswerService answerService;
 
     @Transactional
     public QuestionDto getQuestion(Long id) {
@@ -84,13 +91,14 @@ public class QuestionService {
 
     @Transactional
     public void deleteQuestion(Long id) {
-        if(id != null) {
-            List<Answer> answers = jpaRepository.getOne(id).getAnswers();
-            for (Answer answer : answers) {
-                answerJpaRepository.delete(answer.getId());
+        Question currentQuestion = jpaRepository.getOne(id);
+        currentQuestion.getTestPassages().forEach(s -> {
+            if(testPassageJpaRepository.exists(s.getId())) {
+                testPassageJpaRepository.delete(s.getId());
             }
-            jpaRepository.delete(id);
-        }
+        });
+        List<Answer> answers = answerJpaRepository.findAnswerByQuestionId(id);
+        answers.forEach(s -> answerJpaRepository.delete(s.getId()));
     }
 
     @Transactional
