@@ -13,9 +13,11 @@ public class QuestionDtoForMainModule {
 
     private String question;
 
-    private List<AnswerDtoForMainModule> answerDtos;
+    private List<AnswerDtoForMainModule> answers;
 
     private String type;
+
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -33,12 +35,12 @@ public class QuestionDtoForMainModule {
         this.question = question;
     }
 
-    public List<AnswerDtoForMainModule> getAnswerDtos() {
-        return answerDtos;
+    public List<AnswerDtoForMainModule> getAnswers() {
+        return answers;
     }
 
-    public void setAnswerDtos(List<AnswerDtoForMainModule> answerDtos) {
-        this.answerDtos = answerDtos;
+    public void setAnswers(List<AnswerDtoForMainModule> answers) {
+        this.answers = answers;
     }
 
     public String getType() {
@@ -47,5 +49,13 @@ public class QuestionDtoForMainModule {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

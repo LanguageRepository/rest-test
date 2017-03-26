@@ -32,12 +32,13 @@ public class QuestionUtils {
 
     public QuestionDto convertEntityToDto(Question entity) {
         QuestionDto dto = new QuestionDto();
-        dto.setId(entity.getId());
-        dto.setTestId(entity.getTest().getId());
-        dto.setAnswers(answerUtils.convertEntitiesToDtos(entity.getAnswers()));
-        dto.setQuestion(entity.getQuestion());
-        dto.setType(checkTypeToConvertEntityToDto(entity));
-        return dto;
+            dto.setId(entity.getId());
+            dto.setTestId(entity.getTest().getId());
+            dto.setAnswers(answerUtils.convertEntitiesToDtos(entity.getAnswers()));
+            dto.setQuestion(entity.getQuestion());
+            dto.setType(checkTypeToConvertEntityToDto(entity));
+            dto.setDeleted(entity.getDeleted());
+            return dto;
     }
 
     public QuestionDto convertEntityToDtoForPut(Question entity) {
@@ -47,6 +48,7 @@ public class QuestionUtils {
         dto.setAnswers(answerUtils.convertEntitiesToDtosForPut(entity.getAnswers()));
         dto.setQuestion(entity.getQuestion());
         dto.setType(checkTypeToConvertEntityToDto(entity));
+        dto.setDeleted(entity.getDeleted());
         return dto;
     }
 
@@ -61,6 +63,7 @@ public class QuestionUtils {
         } else {
             entity.setType(QuestionAnswerType.MANUAL_INPUT);
         }
+        entity.setDeleted(dto.getDeleted());
         return entity;
     }
 
@@ -73,6 +76,7 @@ public class QuestionUtils {
             dto.setAnswers(answerUtils.convertEntitiesToDtos(entity.getAnswers()));
             dto.setTestId(entity.getTest().getId());
             dto.setType(checkTypeToConvertEntityToDto(entity));
+            dto.setDeleted(entity.getDeleted());
             dtos.add(dto);
         }
         return dtos;
@@ -86,6 +90,7 @@ public class QuestionUtils {
             entity.setTest(testJpaRepository.getOne(dto.getTestId()));
             entity.setAnswers(answerUtils.convertDtosToEntities(dto.getAnswers()));
             entity.setQuestion(dto.getQuestion());
+            entity.setDeleted(dto.getDeleted());
             entities.add(entity);
         }
         return entities;
@@ -94,12 +99,13 @@ public class QuestionUtils {
     public List<QuestionDtoForTable> convertEntitiesToDtosForTable(List<Question> entities) {
         List<QuestionDtoForTable> dtos = new ArrayList<>();
         for (Question entity1 : entities) {
-            QuestionDtoForTable entity = new QuestionDtoForTable();
-            entity.setId(entity1.getId());
-            entity.setName(entity1.getQuestion());
-            entity.setTestId(entity1.getTest().getId());
-            entity.setTestName(entity1.getTest().getName());
-            dtos.add(entity);
+            QuestionDtoForTable dto = new QuestionDtoForTable();
+            dto.setId(entity1.getId());
+            dto.setName(entity1.getQuestion());
+            dto.setTestId(entity1.getTest().getId());
+            dto.setTestName(entity1.getTest().getName());
+            dto.setDeleted(entity1.getDeleted());
+            dtos.add(dto);
         }
         return dtos;
     }
@@ -138,6 +144,7 @@ public class QuestionUtils {
             dto.setTestId(s.getTest().getId());
             dto.setAnswers(answerUtils.convertEntitiesToDtosWithMarkdownPreprocessor(s.getAnswers()));
             dto.setQuestion(renderer.render(node));
+            dto.setDeleted(s.getDeleted());
             dtos.add(dto);
         });
         return dtos;
@@ -152,9 +159,10 @@ public class QuestionUtils {
             QuestionDtoForMainModule dto = new QuestionDtoForMainModule();
             Node node = parser.parse(s.getQuestion());
             dto.setId(i[0]++);
-            dto.setAnswerDtos(answerUtils.convertEntitiesToDtosForMainModule(s.getAnswers()));
+            dto.setAnswers(answerUtils.convertEntitiesToDtosForMainModule(s.getAnswers()));
             dto.setQuestion(renderer.render(node));
             dto.setType(s.getType().toString());
+            dto.setDeleted(s.getDeleted());
             dtos.add(dto);
         });
         return dtos;

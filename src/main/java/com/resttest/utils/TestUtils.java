@@ -42,6 +42,7 @@ public class TestUtils {
         dto.setParagraphId(entity.getParagraph().getId());
         dto.setQuestions(questionUtils.convertEntitiesToDtos(entity.getQuestions()));
         dto.setDescription(entity.getDescription());
+        dto.setDeleted(entity.getDeleted());
         return dto;
     }
 
@@ -54,6 +55,7 @@ public class TestUtils {
         entity.setOwner(userJpaRepository.getUserByUsername(dto.getOwnerName()));
         entity.setParagraph(paragraphJpaRepository.getOne(dto.getParagraphId()));
         entity.setDescription(dto.getDescription());
+        entity.setDeleted(dto.getDeleted());
         return entity;
     }
 
@@ -65,6 +67,7 @@ public class TestUtils {
             dto.setOwnerName(entity.getOwner().getUsername());
             dto.setName(entity.getName());
             dto.setDescription(entity.getDescription());
+            dto.setDeleted(entity.getDeleted());
             dtos.add(dto);
         }
         return dtos;
@@ -76,6 +79,7 @@ public class TestUtils {
         dto.setOwnerName(entity.getOwner().getUsername());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
+        dto.setDeleted(entity.getDeleted());
         return dto;
     }
 
@@ -85,6 +89,7 @@ public class TestUtils {
         dto.setDescription(entity.getDescription());
         dto.setName(entity.getName());
         dto.setQuestions(questionUtils.convertEntitiesToDtosWithMarkdownPreprocessor(entity.getQuestions()));
+        dto.setDeleted(entity.getDeleted());
         return dto;
     }
 

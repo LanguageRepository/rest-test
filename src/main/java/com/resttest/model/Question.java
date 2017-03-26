@@ -10,7 +10,7 @@ public class Question {
 	private Test test;
 	private List<Answer> answers;
 	private QuestionAnswerType type;
-	private List<TestPassage> testPassages;
+	private Boolean isDeleted;
 
 	public Question() {
 		
@@ -63,18 +63,6 @@ public class Question {
 		this.type = type;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "test_passage_questions",
-				joinColumns = @JoinColumn(name = "question_id"),
-				inverseJoinColumns = @JoinColumn(name = "test_passage_id"))
-	public List<TestPassage> getTestPassages() {
-		return testPassages;
-	}
-
-	public void setTestPassages(List<TestPassage> testPassages) {
-		this.testPassages = testPassages;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -88,5 +76,14 @@ public class Question {
 	@Override
 	public int hashCode() {
 		return id != null ? id.hashCode() : 0;
+	}
+
+	@Column(name = "deleted")
+	public Boolean getDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
 	}
 }

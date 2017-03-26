@@ -11,6 +11,7 @@ public class Test {
 	private Paragraph paragraph;
 	private List<Question> questions;
 	private String description;
+	private Boolean isDeleted = false;
 
 	public Test() {
 		
@@ -69,5 +70,14 @@ public class Test {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Column(name = "deleted")
+	public Boolean getDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
 	}
 }

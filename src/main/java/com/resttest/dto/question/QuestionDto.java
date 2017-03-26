@@ -14,6 +14,7 @@ public class QuestionDto {
     private List<AnswerDto> answers;
     private Long testId;
     private String type;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -53,6 +54,14 @@ public class QuestionDto {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
 

@@ -6,6 +6,7 @@ public class TestDtoForTable {
     private String name;
     private String description;
     private String ownerName;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -37,5 +38,13 @@ public class TestDtoForTable {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

@@ -15,6 +15,7 @@ public class TestDto {
     private Long paragraphId;
     private List<QuestionDto> questions;
     private String description;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -62,5 +63,13 @@ public class TestDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

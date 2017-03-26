@@ -10,7 +10,6 @@ import com.resttest.model.QuestionAnswerType;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.repository.QuestionJpaRepository;
 import com.resttest.repository.TestJpaRepository;
-import com.resttest.repository.TestPassageJpaRepository;
 import com.resttest.utils.AnswerUtils;
 import com.resttest.utils.QuestionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,6 @@ public class QuestionService {
 
     @Autowired
     private AnswerUtils answerUtils;
-
-    @Autowired
-    private TestPassageJpaRepository testPassageJpaRepository;
 
     @Autowired
     private AnswerService answerService;
@@ -91,19 +87,20 @@ public class QuestionService {
 
     @Transactional
     public void deleteQuestion(Long id) {
-        Question currentQuestion = jpaRepository.getOne(id);
-        currentQuestion.getTestPassages().forEach(s -> {
-            if(testPassageJpaRepository.exists(s.getId())) {
-                testPassageJpaRepository.delete(s.getId());
-            }
-        });
-        List<Answer> answers = answerJpaRepository.findAnswerByQuestionId(id);
-        answers.forEach(s -> answerJpaRepository.delete(s.getId()));
+        Question entity = jpaRepository.getOne(id);
+        entity.setDeleted(true);
     }
 
     @Transactional
     public List<QuestionDtoForTable> getQuestionsForTable(Long id) {
-        return questionUtils.convertEntitiesToDtosForTable(jpaRepository.findQuestionByTestId(id));
+        List<Question> questions = jpaRepository.findQuestionByTestId(id);
+        List<Question> presentQuestions = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+            if(questions.get(i).getDeleted() == false) {
+                presentQuestions.add(questions.get(i));
+            }
+        }
+        return questionUtils.convertEntitiesToDtosForTable(presentQuestions);
     }
 
     @Transactional
