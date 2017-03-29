@@ -96,6 +96,9 @@ public class QuestionService {
         List<Question> questions = jpaRepository.findQuestionByTestId(id);
         List<Question> presentQuestions = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
+            if(questions.get(i).getDeleted() == null) {
+                questions.get(i).setDeleted(false);
+            }
             if(questions.get(i).getDeleted() == false) {
                 presentQuestions.add(questions.get(i));
             }

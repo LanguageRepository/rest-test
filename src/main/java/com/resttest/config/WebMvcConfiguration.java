@@ -41,6 +41,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/userservice/usertable").setViewName("/admin-panel/table");
         registry.addViewController("/taskservice/manage").setViewName("/admin-panel/testmanage");
         registry.addViewController("/taskservice/entity/**").setViewName("/admin-panel/taskmanage");
+        registry.addViewController("/test-processing").setViewName("/main-panel/test-passage");
     }
 
     @Override

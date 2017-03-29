@@ -9,6 +9,7 @@ public class Answer {
 	private Question question;
 	private AnswerType type;
 	private String rightValue;
+	private int serialNumber;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -57,4 +58,12 @@ public class Answer {
 		this.rightValue = rightValue;
 	}
 
+	@Column
+	public int getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(int serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 }

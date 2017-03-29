@@ -5,6 +5,7 @@ import com.resttest.dto.ShortView;
 import com.resttest.dto.answer.AnswerDtoForMainModule;
 import com.resttest.model.Answer;
 import com.resttest.model.AnswerType;
+import com.resttest.model.Question;
 import com.resttest.repository.AnswerJpaRepository;
 import com.resttest.repository.QuestionJpaRepository;
 import org.commonmark.node.Node;

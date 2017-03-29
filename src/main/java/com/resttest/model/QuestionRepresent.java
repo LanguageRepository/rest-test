@@ -10,7 +10,10 @@ import javax.persistence.*;
 public class QuestionRepresent {
 
     private Long id;
-    private Question presentQuestion;
+
+    private Question question;
+
+    private Integer serialNumber;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +25,21 @@ public class QuestionRepresent {
         this.id = id;
     }
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    public Question getPresentQuestion() {
-        return presentQuestion;
+    @ManyToOne
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setPresentQuestion(Question presentQuestion) {
-        this.presentQuestion = presentQuestion;
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    @Column
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
     }
 }

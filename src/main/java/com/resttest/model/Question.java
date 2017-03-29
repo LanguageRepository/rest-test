@@ -10,7 +10,9 @@ public class Question {
 	private Test test;
 	private List<Answer> answers;
 	private QuestionAnswerType type;
-	private Boolean isDeleted;
+	private Boolean isDeleted = false;
+	private List<QuestionRepresent> questionRepresents;
+	private Integer serialNumber;
 
 	public Question() {
 		
@@ -78,12 +80,30 @@ public class Question {
 		return id != null ? id.hashCode() : 0;
 	}
 
-	@Column(name = "deleted")
+	@Column(name = "deleted", nullable = false)
 	public Boolean getDeleted() {
 		return isDeleted;
 	}
 
 	public void setDeleted(Boolean deleted) {
 		isDeleted = deleted;
+	}
+
+	@OneToMany(mappedBy="question")
+	public List<QuestionRepresent> getQuestionRepresents() {
+		return questionRepresents;
+	}
+
+	public void setQuestionRepresents(List<QuestionRepresent> questionRepresents) {
+		this.questionRepresents = questionRepresents;
+	}
+
+	@Column
+	public Integer getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(Integer serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 }
