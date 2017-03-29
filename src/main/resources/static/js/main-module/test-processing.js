@@ -28,6 +28,7 @@ function renderButtonForList() {
         button.setAttribute('type', 'button');
         button.setAttribute('class', 'list-group-item list-group-item-action');
         button.setAttribute('id', "button" + j);
+        button.setAttribute('name', test.questions[i].serialNumber);
         button.setAttribute('onclick', `renderQuestion(${test.questions[i].serialNumber}, ${j})`);
         button.setAttribute('class', 'list-group-item list-group-item-action');
         button.innerText = j;
@@ -52,8 +53,10 @@ function renderQuestion(serialNumber, buttonId) {
     }
     if(currentButton.button == listOfButtons[0]) {
         $(`#prevBtn`).attr(`disabled`, `disabled`);
+        $(`#nextBtn`).attr(`disabled`, false);
     } else if(currentButton.button == listOfButtons[listOfButtons.length-1]) {
         $(`#nextBtn`).attr(`disabled`, `disabled`);
+        $(`#prevBtn`).attr(`disabled`, false);
     } else {
         $(`#nextBtn`).attr(`disabled`, false);
         $(`#prevBtn`).attr(`disabled`, false);
@@ -90,6 +93,9 @@ function nextPrev(nextOrPrev) {
                 if(i < listOfButtons.length) {
                     listOfButtons[i + 1].onclick();
                     currentButton.button = listOfButtons[i + 1];
+                    currentButton.serialNumber = parseInt(listOfButtons[i + 1].name);
+                    currentButton.buttonId = parseInt(listOfButtons[i + 1].id
+                        .toString()[listOfButtons[i + 1].id.toString().length-1]);
                     break;
                 }
             }
@@ -99,9 +105,16 @@ function nextPrev(nextOrPrev) {
                 if (i >= 1) {
                     listOfButtons[i - 1].onclick();
                     currentButton.button = listOfButtons[i - 1];
+                    currentButton.serialNumber = parseInt(listOfButtons[i - 1].name);
+                    currentButton.buttonId = parseInt(listOfButtons[i - 1].id
+                        .toString()[listOfButtons[i - 1].id.toString().length-1]);
                     break;
                 }
             }
         }
     }
+}
+
+function renderAnswer() {
+
 }
