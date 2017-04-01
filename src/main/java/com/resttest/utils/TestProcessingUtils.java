@@ -33,6 +33,7 @@ public class TestProcessingUtils {
         dto.setPassingUser(passingUser);
         dto.setTest(getSimpleTest(entity.getTest()));
         dto.setQuestions(questionRepresentUtils.convertEntitiesToDtos(entity.getQuestionsRepresent()));
+        dto.setTestAccess(new ShortView(entity.getTestAccess().getId(), entity.getTestAccess().getType()));
         return dto;
     }
 

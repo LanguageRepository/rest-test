@@ -4,6 +4,8 @@ import com.resttest.dto.QuestionRepresentDto;
 import com.resttest.dto.ShortView;
 import com.resttest.dto.question.SimpleQuestionDto;
 import com.resttest.dto.test.SimpleTestDto;
+import com.resttest.dto.testaccess.TestAccessDto;
+import com.resttest.model.TestAccess;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class TestProcessingDto {
     private List<QuestionRepresentDto> questions;
 
     private ShortView passingUser;
+
+    private ShortView testAccess;
 
     public Long getId() {
         return id;
@@ -60,5 +64,13 @@ public class TestProcessingDto {
 
     public void setPassingUser(ShortView passingUser) {
         this.passingUser = passingUser;
+    }
+
+    public ShortView getTestAccess() {
+        return testAccess;
+    }
+
+    public void setTestAccess(ShortView testAccess) {
+        this.testAccess = testAccess;
     }
 }

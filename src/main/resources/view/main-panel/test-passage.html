@@ -50,7 +50,7 @@
     </nav>
     <div class="content"><br>
         <div class="row">
-            <div class="col-md-1" style="width: 200px;">
+            <div class="col-md-1">
                 <div class="list-group" id="listOfQuestionNumbers">
                     <!--<button type="button" class="list-group-item list-group-item-action active">1</button>-->
 
@@ -62,13 +62,17 @@
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title" id="question"></h4><br>
-                        <p class="card-text">
-                            <label><input type="radio" id="q1a1" name="q1a"> советом подруги</label><br>
-                            <label><input type="radio" id="q1a2" name="q1a"> только своим вкусом, желанием</label><br>
-                            <label><input type="radio" id="q1a3" name="q1a"> ценой (чем дороже, тем лучше)</label><br>
-                        </p>
+                        <p class="card-text" id="answersContainer">
+                            <input type="radio">Текст<br>
+                    </p>
                         <button id="prevBtn" class="btn" onclick="nextPrev(`prev`)">Предыдущий</button>
                         <button id="nextBtn" class="btn float-right" onclick="nextPrev(`next`)">Следующий</button>
+                        <nav aria-label="...">
+                            <ul class="pager">
+                                <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+                                <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -26,20 +26,20 @@ function renderTaskTable() {
 
         "aaData": tasks.map(item => {
             let result = [];
-            result.push(item.testName);
+            result.push(item.test.name);
             result.push(item.ownerName);
             result.push(item.initialTerm + " до " + item.deadline);
             result.push(item.type == "Control" ? "Контрольный" : "Обычный");
             result.push("Осталось " + item.numberOfAttempts + " попытки");
-            result.push(item.active ? renderButton(item.id)[1] : renderButton(item.id)[0]);
+            result.push(item.active ? renderButton(item)[1] : renderButton(item)[0]);
             return result;
         })
     })
 }
 
-function renderButton(id) {
-    return [`<button type="button" id="${id}" disabled class="btn btn-danger" onclick="saveCurrentTestProcessingId(${id})">Приступить</button>`,
-            `<button type="button" id="${id}" class="btn btn-info" onclick="saveCurrentTestProcessingId(${id})">Приступить</button>`];
+function renderButton(item) {
+    return [`<button type="button" id="${item.id}" disabled class="btn btn-danger" onclick="saveCurrentTestProcessingId(${item.test.id}, ${item.id})">Приступить</button>`,
+            `<button type="button" id="${item.id}" class="btn btn-info" onclick="saveCurrentTestProcessingId(${item.test.id}, ${item.id})">Приступить</button>`];
 }
 
 function findChoosenValue() {
@@ -55,7 +55,8 @@ function findChoosenValue() {
     return choosenValues;
 }
 
-function saveCurrentTestProcessingId(id) {
-    localStorage.setItem("tpId", id);
+function saveCurrentTestProcessingId(testId, taskAccessId) {
+    localStorage.setItem("tpId", testId);
+    localStorage.setItem("taId", taskAccessId);
     location.pathname = "/test-processing";
 }

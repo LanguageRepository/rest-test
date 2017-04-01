@@ -1,5 +1,7 @@
 package com.resttest.dto.testaccess;
 
+import com.resttest.dto.ShortView;
+
 /**
  * Created by Владислав on 21.03.2017.
  */
@@ -13,7 +15,7 @@ public class TestAccessDtoForMainModule {
 
     private String ownerName;
 
-    private String testName;
+    private ShortView test;
 
     private Integer numberOfAttempts;
 
@@ -53,12 +55,12 @@ public class TestAccessDtoForMainModule {
         this.ownerName = ownerName;
     }
 
-    public String getTestName() {
-        return testName;
+    public ShortView getTest() {
+        return test;
     }
 
-    public void setTestName(String testName) {
-        this.testName = testName;
+    public void setTest(ShortView test) {
+        this.test = test;
     }
 
     public Integer getNumberOfAttempts() {

@@ -1,5 +1,6 @@
 package com.resttest.utils;
 
+import com.resttest.dto.ShortView;
 import com.resttest.dto.testaccess.TestAccessDto;
 import com.resttest.dto.testaccess.TestAccessDtoForAdminModule;
 import com.resttest.dto.testaccess.TestAccessDtoForMainModule;
@@ -122,7 +123,7 @@ public class TestAccessUtils {
             }
             dto.setNumberOfAttempts(entity.getNumberOfAttempts());
             dto.setOwnerName(owner.getLastName() + " " + owner.getFirstName() + " " + owner.getMiddleName());
-            dto.setTestName(entity.getTest().getName());
+            dto.setTest(new ShortView(entity.getTest().getId(), entity.getTest().getName()));
             dto.setType(entity.getType());
             dto.setActive(entity.getActive());
             dtos.add(dto);

@@ -5,20 +5,22 @@ let listOfButtons = [];
 let currentButton = [];
 
 $(document).ready(function () {
-    getCurrentTestProcessing(localStorage["tpId"]);
+    getCurrentTestProcessing(localStorage["tpId"], localStorage["taId"]);
 });
 
-function getCurrentTestProcessing(id) {
-    $.ajax({
-        url : "/test-processing/" + id,
-        type : "GET",
-        dataType : "json",
-        contentType : "application/json",
-        success : function (data) {
-            test = data;
-            renderButtonForList();
-        }
-    });
+function getCurrentTestProcessing(testId, taskAccessId) {
+    if(test.id == null) {
+        $.ajax({
+            url: `/processing/${testId}/${taskAccessId}`,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+                test = data;
+                renderButtonForList();
+            }
+        });
+    }
 }
 
 function renderButtonForList() {
@@ -69,21 +71,8 @@ function renderQuestion(serialNumber, buttonId) {
             question = test.questions[i];
         }
     }
-    switch (question.type) {
-        case 'ONE_RIGHT_VALUE' :
-            console.log('ONE_RIGHT_VALUE');
-            break;
-        case 'MANY_RIGHT_VALUE' :
-            console.log('MANY_RIGHT_VALUE');
-            break;
-        case 'MANUAL_INPUT' :
-            console.log('MANUAL_INPUT');
-            break;
-        default :
-            console.log('Type not found');
-            break;
-    }
     $('#question').html(question.question);
+    renderAnswers();
 }
 
 function nextPrev(nextOrPrev) {
@@ -115,6 +104,45 @@ function nextPrev(nextOrPrev) {
     }
 }
 
-function renderAnswer() {
+function createAnswerInputs() {
+    let currentQuestion;
+    let answerInputs = [];
+    for (let i = 0; i < test.questions.length; i++) {
+        if(currentButton.serialNumber.toString() == test.questions[i].serialNumber) {
+            currentQuestion = test.questions[i];
+        }
+    }
+    for (let i = 0; i < currentQuestion.answers.length; i++) {
+        let type;
+        switch (currentQuestion.type) {
+            case 'ONE_RIGHT_VALUE' :
+                type = `radio`;
+                break;
+            case 'MANY_RIGHT_VALUE' :
+                type = `checkbox`;
+                break;
+            case 'MANUAL_INPUT' :
+                type = `text`;
+                break;
+            default :
+                type = `radio`;
+                break;
+        }
+        answerInputs.push(`<div><div style="display: inline-block"><input type="${type}"/></div><div style="display: inline-block">${currentQuestion.answers[i].answer}</div></div>`)
+    }
+    return answerInputs;
+}
 
+function renderAnswers() {
+    let container = $(`#answersContainer`);
+    container.empty();
+    let answers = createAnswerInputs();
+    for (let i = 0; i < answers.length; i++) {
+        container.append(answers[i]);
+    }
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+    });
 }

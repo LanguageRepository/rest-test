@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Владислав on 28.03.2017.
  */
 @RestController
-@RequestMapping("/test-processing")
+@RequestMapping("/processing/")
 public class TestProcessingRestController {
 
     @Autowired
     private TestProcessingService testProcessingService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public TestProcessingDto getTestProcessingByTest(@PathVariable("id") Long id) {
-        return testProcessingService.getTestProcessingByTestId(id);
+    @RequestMapping(value = "/{testId}/{testAccessId}", method = RequestMethod.GET, produces = "application/json")
+    public TestProcessingDto getTestProcessingByTest(@PathVariable("testId") Long testId,
+                                                     @PathVariable("testAccessId") Long taskAccessId) {
+        return testProcessingService.getTestProcessingByTestId(testId, taskAccessId);
     }
 
 }

@@ -18,6 +18,8 @@ public class TestProcessing {
 
     private List<QuestionRepresent> questionsRepresent;
 
+    private TestAccess testAccess;
+
     private User passingUser;
 
     @Id
@@ -64,5 +66,14 @@ public class TestProcessing {
 
     public void setPassingUser(User passingUser) {
         this.passingUser = passingUser;
+    }
+
+    @ManyToOne
+    public TestAccess getTestAccess() {
+        return testAccess;
+    }
+
+    public void setTestAccess(TestAccess testAccess) {
+        this.testAccess = testAccess;
     }
 }
