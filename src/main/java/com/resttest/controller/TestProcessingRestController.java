@@ -18,10 +18,9 @@ public class TestProcessingRestController {
     @Autowired
     private TestProcessingService testProcessingService;
 
-    @RequestMapping(value = "/{testId}/{testAccessId}", method = RequestMethod.GET, produces = "application/json")
-    public TestProcessingDto getTestProcessingByTest(@PathVariable("testId") Long testId,
-                                                     @PathVariable("testAccessId") Long taskAccessId) {
-        return testProcessingService.getTestProcessingByTestId(testId, taskAccessId);
+    @RequestMapping(value = "/{testAccessId}", method = RequestMethod.GET, produces = "application/json")
+    public TestProcessingDto getTestProcessingByTest(@PathVariable("testAccessId") Long taskAccessId) {
+        return testProcessingService.getTestProcessing(taskAccessId);
     }
 
 }

@@ -1,11 +1,10 @@
 package com.resttest.service;
 
+import com.resttest.dto.test.TestDto;
+import com.resttest.dto.testaccess.TestAccessDto;
 import com.resttest.dto.testprocessing.TestProcessingDto;
 import com.resttest.model.*;
-import com.resttest.repository.QuestionRepresentJpaRepository;
-import com.resttest.repository.TestAccessJpaRepository;
-import com.resttest.repository.TestJpaRepository;
-import com.resttest.repository.TestProcessingJpaRepository;
+import com.resttest.repository.*;
 import com.resttest.utils.TestProcessingUtils;
 import com.resttest.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,56 +24,57 @@ import java.util.Objects;
 public class TestProcessingService {
 
     @Autowired
-    private TestProcessingUtils utils;
-
-    @Autowired
     private TestJpaRepository testJpaRepository;
-
-    @Autowired
-    private TestProcessingJpaRepository jpaRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserUtils userUtils;
 
     @Autowired
     private TestAccessJpaRepository testAccessJpaRepository;
 
     @Autowired
-    private QuestionRepresentJpaRepository questionRepresentJpaRepository;
+    private UserService userService;
 
-    @Transactional
-    public TestProcessingDto getTestProcessingByTestId(Long testId, Long testAccessId) {
-        TestProcessing entity;
-        if(creationControl(testId, testAccessId).getId() == null) {
-            entity = createTestProcessing(testJpaRepository.getOne(testId),
-                    testAccessJpaRepository.getOne(testAccessId));
+    @Autowired
+    private TestProcessingUtils testProcessingUtils;
+
+    @Autowired
+    private AnswerRepresentJpaRepository answerRepresentJpaRepository;
+
+    @Autowired
+    private UserJpaRepository userJpaRepository;
+
+    @Autowired
+    private TestProcessingJpaRepository jpaRepository;
+
+    @Autowired
+    private TestProcessingUtils utils;
+
+    public TestProcessingDto getTestProcessing(Long testAccessId) {
+        TestProcessing result;
+        if(creationControl(testAccessId).getId() == null) {
+            TestProcessing entity = createTestProcessing(testAccessId);
+            entity.getQuestionsRepresent().forEach(s -> s.getAnswers().forEach(j -> answerRepresentJpaRepository.save(j)));
+            return utils.convertEntityToDto(jpaRepository.getOne(entity.getId()));
         } else {
-            entity = creationControl(testId, testAccessId);
+            result = creationControl(testAccessId);
+            return utils.convertEntityToDto(jpaRepository.getOne(result.getId()));
         }
-        TestProcessingDto result = utils.convertEntityToDto(jpaRepository.getOne(entity.getId()));
-        Collections.shuffle(result.getQuestions());
-        result.getQuestions().forEach(s -> Collections.shuffle(s.getAnswers()));
-        return result;
     }
 
-    @Transactional
-    private TestProcessing createTestProcessing(Test test, TestAccess testAccess) {
-        setIndicies(test);
+    private TestProcessing createTestProcessing(Long testAccessId) {
+        TestAccess testAccess = testAccessJpaRepository.getOne(testAccessId);
+        Test currentTest = testAccess.getTest();
         TestProcessing testProcessing = new TestProcessing();
+        setIndices(currentTest);
         List<QuestionRepresent> questionRepresents = new ArrayList<>();
-        test.getQuestions().forEach(s -> questionRepresents.add(createQuestionRepresent(s)));
-        testProcessing.setTest(test);
-        testProcessing.setName(test.getName());
-        testProcessing.setPassingUser(userUtils.convertDtoToEntityForPut(userService.getCurrentAuthenticatedUser()));
-        testProcessing.setQuestionsRepresent(questionRepresents);
+        currentTest.getQuestions().forEach(s -> questionRepresents.add(createQuestionRepresent(s)));
+        Collections.shuffle(questionRepresents);
         testProcessing.setTestAccess(testAccess);
-        return jpaRepository.saveAndFlush(testProcessing);
+        testProcessing.setTest(currentTest);
+        testProcessing.setQuestionsRepresent(questionRepresents);
+        testProcessing.setPassingUser(userJpaRepository.getOne(userService.getCurrentAuthenticatedUser().getId()));
+        return jpaRepository.save(testProcessing);
     }
 
-    private void setIndicies(Test test) {
+    private void setIndices(Test test) {
         final Integer[] qId = {0};
         test.getQuestions().forEach(s -> {
             final Integer[] aId = {0};
@@ -88,20 +88,36 @@ public class TestProcessingService {
 
     private QuestionRepresent createQuestionRepresent(Question question) {
         QuestionRepresent questionRepresent = new QuestionRepresent();
+        List<AnswerRepresent> answerRepresents = new ArrayList<>();
+        question.getAnswers().forEach(s -> answerRepresents.add(createAnswerRepresent(s, questionRepresent)));
         questionRepresent.setQuestion(question);
         questionRepresent.setSerialNumber(question.getSerialNumber());
-        return questionRepresentJpaRepository.saveAndFlush(questionRepresent);
+        questionRepresent.setAnswered(false);
+        Collections.shuffle(answerRepresents);
+        questionRepresent.setAnswers(answerRepresents);
+        return questionRepresent;
     }
 
-    private TestProcessing creationControl(Long testId, Long taskAccessId) {
-        Long currentUserId = userService.getCurrentAuthenticatedUser().getId();
+    private AnswerRepresent createAnswerRepresent(Answer answer, QuestionRepresent questionRepresent) {
+        AnswerRepresent answerRepresent = new AnswerRepresent();
+        answerRepresent.setSerialNumber(answer.getSerialNumber());
+        answerRepresent.setAnswer(answer.getAnswer());
+        answerRepresent.setChosen(false);
+        answerRepresent.setQuestion(questionRepresent);
+        answerRepresent.setType(answer.getType().toString());
+        return answerRepresent;
+    }
+
+    private TestProcessing creationControl(Long testAccessId) {
+        Long userId = userService.getCurrentAuthenticatedUser().getId();
+        TestAccess currentTestAccess = testAccessJpaRepository.getOne(testAccessId);
         List<TestProcessing> allTestProcessing = jpaRepository.findAll();
         TestProcessing result = new TestProcessing();
-        for (TestProcessing anAllTestProcessing : allTestProcessing) {
-            if (Objects.equals(anAllTestProcessing.getPassingUser().getId(), currentUserId) &&
-                    Objects.equals(anAllTestProcessing.getTest().getId(), testId) &&
-                    Objects.equals(anAllTestProcessing.getTestAccess().getId(), taskAccessId)) {
-                result = anAllTestProcessing;
+        for (int i = 0; i < allTestProcessing.size(); i++) {
+            if(allTestProcessing.get(i).getPassingUser().getId() == userId &&
+                    allTestProcessing.get(i).getTestAccess().getId() == testAccessId &&
+                    allTestProcessing.get(i).getTest().getId() == currentTestAccess.getTest().getId()) {
+                result = allTestProcessing.get(i);
             }
         }
         return result;

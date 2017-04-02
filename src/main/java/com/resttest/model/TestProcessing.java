@@ -12,8 +12,6 @@ public class TestProcessing {
 
     private Long id;
 
-    private String name;
-
     private Test test;
 
     private List<QuestionRepresent> questionsRepresent;
@@ -30,15 +28,6 @@ public class TestProcessing {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @ManyToOne

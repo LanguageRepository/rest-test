@@ -1,6 +1,7 @@
 package com.resttest.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Владислав on 26.03.2017.
@@ -14,6 +15,10 @@ public class QuestionRepresent {
     private Question question;
 
     private Integer serialNumber;
+
+    private Boolean isAnswered = false;
+
+    private List<AnswerRepresent> answers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +46,23 @@ public class QuestionRepresent {
 
     public void setSerialNumber(Integer serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    @Column
+    public Boolean getAnswered() {
+        return isAnswered;
+    }
+
+    public void setAnswered(Boolean answered) {
+        isAnswered = answered;
+    }
+
+    @OneToMany(mappedBy = "question")
+    public List<AnswerRepresent> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerRepresent> answers) {
+        this.answers = answers;
     }
 }

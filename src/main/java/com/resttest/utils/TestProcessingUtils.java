@@ -29,7 +29,6 @@ public class TestProcessingUtils {
                 entity.getPassingUser().getLastName() + " " +
                 entity.getPassingUser().getFirstName() + " " + entity.getPassingUser().getMiddleName());
         dto.setId(entity.getId());
-        dto.setName(entity.getName());
         dto.setPassingUser(passingUser);
         dto.setTest(getSimpleTest(entity.getTest()));
         dto.setQuestions(questionRepresentUtils.convertEntitiesToDtos(entity.getQuestionsRepresent()));
