@@ -64,8 +64,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("kvasar739@gmail.com");
-        mailSender.setPassword("honornew1");
+        mailSender.setUsername("login@mail.com");
+        mailSender.setPassword("passwordmail");
         mailSender.setDefaultEncoding("UTF-8");
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
